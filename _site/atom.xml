@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-19T18:23:30+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Gent79</title><subtitle>My Blog on Github</subtitle><author><name>Reid Cheng</name></author><entry><title type="html">Running Cisco Trex</title><link href="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/" rel="alternate" type="text/html" title="Running Cisco Trex" /><published>2019-10-18T00:00:00+08:00</published><updated>2019-10-18T00:00:00+08:00</updated><id>http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex</id><content type="html" xml:base="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/">&lt;p&gt;&lt;strong&gt;Side Note&lt;/strong&gt; This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn’t have very fancy GUI client like Spirent, but its GUI client is getting improved a lot.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-19T18:27:31+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Gent79</title><subtitle>My Blog on Github</subtitle><author><name>Reid Cheng</name></author><entry><title type="html">Running Cisco Trex</title><link href="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/" rel="alternate" type="text/html" title="Running Cisco Trex" /><published>2019-10-18T00:00:00+08:00</published><updated>2019-10-18T00:00:00+08:00</updated><id>http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex</id><content type="html" xml:base="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/">&lt;p&gt;&lt;strong&gt;Side Note&lt;/strong&gt; This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn’t have very fancy GUI client like Spirent, but its GUI client is getting improved a lot.&lt;/p&gt;
 
 &lt;h1 id=&quot;install-cisco-trex&quot;&gt;Install Cisco Trex&lt;/h1&gt;
 
@@ -99,7 +99,7 @@ trexcisco/trex-dev                 Official TRex development environment        
 
 &lt;p&gt;I will use &lt;a href=&quot;https://github.com/cisco-system-traffic-generator/trex-stateless-gui&quot;&gt;Trex GUI client&lt;/a&gt; for better presenting the testing result.&lt;/p&gt;
 
-&lt;h2 id=&quot;start-trex-server-with-default-configuration-file&quot;&gt;Start Trex server with default configuration file.&lt;/h2&gt;
+&lt;h3 id=&quot;start-trex-server-with-default-configuration-file&quot;&gt;Start Trex server with default configuration file.&lt;/h3&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Cisco-Trex v2.41]# &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/trex_cfg.yaml 
    - port_limit      : 2
@@ -118,15 +118,15 @@ trexcisco/trex-dev                 Official TRex development environment        
    The ports are bound/configured.
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;open-trex-gui-client-and-connect-to-the-server&quot;&gt;Open Trex GUI client and connect to the server:&lt;/h2&gt;
+&lt;h3 id=&quot;open-trex-gui-client-and-connect-to-the-server&quot;&gt;Open Trex GUI client and connect to the server:&lt;/h3&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png&quot; alt=&quot;image-20191019155022256&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;acquire-port-0-which-is-mapping-to-eth2-port-1-to-eth3&quot;&gt;Acquire Port 0 which is mapping to eth2, port 1 to eth3.&lt;/h2&gt;
+&lt;h3 id=&quot;acquire-port-0-which-is-mapping-to-eth2-port-1-to-eth3&quot;&gt;Acquire Port 0 which is mapping to eth2, port 1 to eth3.&lt;/h3&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png&quot; alt=&quot;image-20191019154829306&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;convert-python-code-to-yaml-file-profile-and-add-the-profile-associating-with-port-0&quot;&gt;Convert Python code to YAML file &lt;strong&gt;(Profile)&lt;/strong&gt;, and add the profile associating with Port 0&lt;/h2&gt;
+&lt;h3 id=&quot;convert-python-code-to-yaml-file-profile-and-add-the-profile-associating-with-port-0&quot;&gt;Convert Python code to YAML file &lt;strong&gt;(Profile)&lt;/strong&gt;, and add the profile associating with Port 0&lt;/h3&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Cisco-Trex v2.41]# ./stl-sim &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; stl/flow_stats_latency.py &lt;span class=&quot;nt&quot;&gt;--yaml&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; stl/flow_stats_latency.yaml 
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Cisco-Trex v2.41]# &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;stl/flow_stats_latency.yaml 
@@ -152,7 +152,7 @@ trexcisco/trex-dev                 Official TRex development environment        
     instructions: &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;traffic-profiles---load-profile--load-up-the-profile&quot;&gt;&lt;strong&gt;&lt;em&gt;Traffic Profiles&lt;/em&gt;&lt;/strong&gt; -&amp;gt; &lt;strong&gt;&lt;em&gt;load Profile&lt;/em&gt;&lt;/strong&gt;  load up the profile&lt;/h2&gt;
+&lt;h3 id=&quot;traffic-profiles---load-profile--load-up-the-profile&quot;&gt;&lt;strong&gt;&lt;em&gt;Traffic Profiles&lt;/em&gt;&lt;/strong&gt; -&amp;gt; &lt;strong&gt;&lt;em&gt;load Profile&lt;/em&gt;&lt;/strong&gt;  load up the profile&lt;/h3&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png&quot; alt=&quot;image-20191019175826840&quot; /&gt;&lt;/p&gt;
 
@@ -160,11 +160,11 @@ trexcisco/trex-dev                 Official TRex development environment        
 
 &lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt;  &lt;u&gt;Check RX Stats and Latency enabled, PG ID could be assigned to integer and used to track multiple streams  &lt;/u&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;use-packet-editor-to-alter-packet-content-remove-default-tcp-layer-and-add-udp-layer-also-update-srcdst-ip-address&quot;&gt;Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.&lt;/h2&gt;
+&lt;h3 id=&quot;use-packet-editor-to-alter-packet-content-remove-default-tcp-layer-and-add-udp-layer-also-update-srcdst-ip-address&quot;&gt;Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.&lt;/h3&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png&quot; alt=&quot;image-20191019164800639&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;now-its-time-to-fire-up-trex&quot;&gt;Now, it’s time to fire up Trex&lt;/h2&gt;
+&lt;h3 id=&quot;now-its-time-to-fire-up-trex&quot;&gt;Now, it’s time to fire up Trex&lt;/h3&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png&quot; alt=&quot;image-20191019180212740&quot; /&gt;&lt;/p&gt;
 
