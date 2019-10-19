@@ -4,6 +4,7 @@ title: "Fix Root-ca-chain issue on Viptela vBond"
 description: ""
 categories: [SD-WAN]
 tags: [Cisco,Viptela,CA]
+comments: true
 redirect_from:
     - /2019/10/08/
 ---

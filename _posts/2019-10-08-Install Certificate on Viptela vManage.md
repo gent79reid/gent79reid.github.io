@@ -4,6 +4,7 @@ title: "Install Certificate on Viptela vManage"
 description: ""
 categories: [SD-WAN]
 tags: [Cisco,Viptela,CA]
+comments: true
 redirect_from:
   - /2019/10/08/
 ---
