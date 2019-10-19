@@ -65,7 +65,7 @@ Certificate:
 ```
 
 Then, from vManage install the signed certificate of vBond CSR. 
-![image-20191008230321074](/assets/images/screenshots/image-20191008230321074.png)
+![image-20191008230321074](/assets/images/image-20191008230321074.png)
 
 ```bash
 vBond-DC# show certificate installed 
