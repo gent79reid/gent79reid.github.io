@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-19T18:13:01+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Gent79</title><subtitle>My Blog on Github</subtitle><author><name>Reid Cheng</name></author><entry><title type="html">Running Cisco Trex</title><link href="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/" rel="alternate" type="text/html" title="Running Cisco Trex" /><published>2019-10-18T00:00:00+08:00</published><updated>2019-10-18T00:00:00+08:00</updated><id>http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex</id><content type="html" xml:base="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/">&lt;p&gt;&lt;strong&gt;Side Note&lt;/strong&gt; This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn’t have very fancy GUI client like Spirent, but its GUI client is getting improved a lot.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-19T18:17:47+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Gent79</title><subtitle>My Blog on Github</subtitle><author><name>Reid Cheng</name></author><entry><title type="html">Running Cisco Trex</title><link href="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/" rel="alternate" type="text/html" title="Running Cisco Trex" /><published>2019-10-18T00:00:00+08:00</published><updated>2019-10-18T00:00:00+08:00</updated><id>http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex</id><content type="html" xml:base="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/">&lt;p&gt;&lt;strong&gt;Side Note&lt;/strong&gt; This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn’t have very fancy GUI client like Spirent, but its GUI client is getting improved a lot.&lt;/p&gt;
 
 &lt;h1 id=&quot;install-cisco-trex&quot;&gt;Install Cisco Trex&lt;/h1&gt;
 
@@ -100,39 +100,40 @@ trexcisco/trex-dev                 Official TRex development environment        
 &lt;p&gt;I will use &lt;a href=&quot;https://github.com/cisco-system-traffic-generator/trex-stateless-gui&quot;&gt;Trex GUI client&lt;/a&gt; for better presenting the testing result.&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Start Trex server with default configuration file.&lt;/p&gt;
+  &lt;li&gt;Start Trex server with default configuration file.&lt;/li&gt;
+&lt;/ol&gt;
 
-    &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Cisco-Trex v2.41]# &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/trex_cfg.yaml 
-- port_limit      : 2
-  version         : 2
-&lt;span class=&quot;c&quot;&gt;#List of interfaces. Change to suit your setup. Use ./dpdk_setup_ports.py -s to see available options&lt;/span&gt;
-  interfaces    : &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;eth2&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;eth3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; 
-  port_info       :  &lt;span class=&quot;c&quot;&gt;# Port IPs. Change to suit your needs. In case of loopback, you can leave as is.&lt;/span&gt;
-          - ip         : 172.16.150.2
-            default_gw : 172.16.150.1
-          - ip         : 172.16.200.2
-            default_gw : 172.16.200.1
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;   &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Cisco-Trex v2.41]# &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/trex_cfg.yaml 
+   - port_limit      : 2
+     version         : 2
+   &lt;span class=&quot;c&quot;&gt;#List of interfaces. Change to suit your setup. Use ./dpdk_setup_ports.py -s to see available options&lt;/span&gt;
+     interfaces    : &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;eth2&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;eth3&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; 
+     port_info       :  &lt;span class=&quot;c&quot;&gt;# Port IPs. Change to suit your needs. In case of loopback, you can leave as is.&lt;/span&gt;
+             - ip         : 172.16.150.2
+               default_gw : 172.16.150.1
+             - ip         : 172.16.200.2
+               default_gw : 172.16.200.1
    
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Cisco-Trex v2.41]# ./t-rex-64 &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;
-Killing Scapy server... Scapy server is killed
-Starting Scapy server.... Scapy server is started
-The ports are bound/configured.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Open Trex GUI client and connect to the server:&lt;/p&gt;
+   &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Cisco-Trex v2.41]# ./t-rex-64 &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;
+   Killing Scapy server... Scapy server is killed
+   Starting Scapy server.... Scapy server is started
+   The ports are bound/configured.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-    &lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png&quot; alt=&quot;image-20191019155022256&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Acquire Port 0 which is mapping to eth2, port 1 to eth3.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Open Trex GUI client and connect to the server:&lt;/li&gt;
+&lt;/ol&gt;
 
-    &lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png&quot; alt=&quot;image-20191019154829306&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Convert Python code to YAML file &lt;strong&gt;(Profile)&lt;/strong&gt;, and add the profile associating with Port 0&lt;/p&gt;
-  &lt;/li&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png&quot; alt=&quot;image-20191019155022256&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Acquire Port 0 which is mapping to eth2, port 1 to eth3.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png&quot; alt=&quot;image-20191019154829306&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Convert Python code to YAML file &lt;strong&gt;(Profile)&lt;/strong&gt;, and add the profile associating with Port 0&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@Cisco-Trex v2.41]# ./stl-sim &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; stl/flow_stats_latency.py &lt;span class=&quot;nt&quot;&gt;--yaml&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; stl/flow_stats_latency.yaml 
@@ -176,12 +177,10 @@ The ports are bound/configured.
 &lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png&quot; alt=&quot;image-20191019164800639&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;Now, it’s time to fire up Trex&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png&quot; alt=&quot;image-20191019180212740&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;Now, it’s time to fire up Trex&lt;/li&gt;
 &lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png&quot; alt=&quot;image-20191019180212740&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Navigate to “Latency” tab, check the counters of “dropped”.&lt;/p&gt;
 
