@@ -107,7 +107,100 @@ To verify network convergence, use **stateless mode** plus rx stats feature.
 
 #Using Trex to generate simple traffic
 
-Here is the lab which I am building to verify Cisco Viptela SD-WAN solution, the lab is running on the top of EVE-NG, I have to admit that eve-ng is very user-friendly, easy learning-curve and excellent UI to draw your arbitrary topology. After paid for the professional license, you can enjoy docker and more fancy topology drawing, most importantly PRO version has integrated the link quality simulation, saving your time to use linux-netem or wanem 
+Here is the lab which I am building to verify Cisco Viptela SD-WAN solution, the lab is running on the top of EVE-NG, I have to admit that eve-ng is very user-friendly, easy learning-curve and excellent UI to draw your arbitrary topology. After paid for the professional license, you can enjoy docker and more fancy topology drawing, most importantly PRO version has integrated the link quality simulation, saving your time to use [linux-netem](https://wiki.linuxfoundation.org/networking/netem) or [wanem](http://wanem.sourceforge.net/). 
+
+![image-20191019155002861](../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png)
+
+Please avoid the part of SD-WAN components, we will only focus on Cisco Trex on the right-hand side, I will write other posts to walk through the steps of setting up Cisco Viptela SD-WAN on all virtualized environment. 
+
+In this lab, I installed Cisco Trex docker and imported to EVE-NG environment. The Trex docker has bee assigned 4 ports, one of them is used to communicate with Trex GUI client which is running on my Mac. Normally we should allocate even number of ports to Trex, but here I will use two of them at a time. 
+
+To start with one simple stateless testing, Trex will generate a stream of UDP traffic with source ip address ( 172.16.150.2/24 at Site 150) and destination ip address ( 172.16.200.2/24 at Site 200), this stream is **unidirectional** from Trex eth2 to eth3, I want to verify the statistics of packet loss while Branch 1 vedge's Internet circuit went down. This is a simple test we always do in network convergence timer testing.  
+
+I will use [Trex GUI client](https://github.com/cisco-system-traffic-generator/trex-stateless-gui) for better presenting the testing result. 
+
+1. Start Trex server with default configuration file.
+
+   ```bash
+   [root@Cisco-Trex v2.41]# cat /etc/trex_cfg.yaml 
+   - port_limit      : 2
+     version         : 2
+   #List of interfaces. Change to suit your setup. Use ./dpdk_setup_ports.py -s to see available options
+     interfaces    : ["eth2","eth3"] 
+     port_info       :  # Port IPs. Change to suit your needs. In case of loopback, you can leave as is.
+             - ip         : 172.16.150.2
+               default_gw : 172.16.150.1
+             - ip         : 172.16.200.2
+               default_gw : 172.16.200.1
+   
+   [root@Cisco-Trex v2.41]# ./t-rex-64 -i
+   Killing Scapy server... Scapy server is killed
+   Starting Scapy server.... Scapy server is started
+   The ports are bound/configured.
+   ```
+
+2. Open Trex GUI client and connect to the server:
+
+   ![image-20191019155022256](../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png)
+
+3. Acquire Port 0 which is mapping to eth2, port 1 to eth3.
+
+   ![image-20191019154829306](../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png)
+
+   4. Convert Python code to YAML file **(Profile)**, and add the profile associating with Port 0 
+
+```bash
+[root@Cisco-Trex v2.41]# ./stl-sim -f stl/flow_stats_latency.py --yaml > stl/flow_stats_latency.yaml 
+[root@Cisco-Trex v2.41]# cat stl/flow_stats_latency.yaml 
+- action_count: 0
+  enabled: true
+  flags: 0
+  flow_stats:
+    enabled: true
+    rule_type: latency
+    stream_id: 7
+  isg: 0.0
+  mode:
+    rate:
+      type: pps
+      value: 1000
+    type: continuous
+  packet:
+    binary: !!python/unicode 'AAAAAQAAAAAAAgAACABFAAAuAAEAAEARxJisEJYCrBDIAgQBAAwAGglLeHh4eHh4eHh4eHh4eHh4eHh4'
+    meta: ''
+  self_start: true
+  start_paused: false
+  vm:
+    instructions: []
+```
+
+
+
+5. ***Traffic Profiles*** -> ***load Profile***  load up the profile 
+
+![image-20191019175826840](/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png)
+
+Change Rate parameter to "pps/1.0k", so we can circulate the time of network convergency. (one packet loss = the 1ms loss).
+
+**Important:**  <u>Check RX Stats and Latency enabled, PG ID could be assigned to integer and used to track multiple streams  </u>
+
+6. Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.
+
+![image-20191019164800639](../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png)
+
+7. Now, it's time to fire up Trex
+
+   ![image-20191019180212740](/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png)
+
+Navigate to "Latency" tab, check the counters of "dropped".
+
+![image-20191019180405409](/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180405409.png)
+
+
+
+
+
+
 
 
 
