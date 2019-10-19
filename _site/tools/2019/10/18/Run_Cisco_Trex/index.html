@@ -535,39 +535,40 @@ trexcisco/trex-dev                 Official TRex development environment        
 <p>I will use <a href="https://github.com/cisco-system-traffic-generator/trex-stateless-gui">Trex GUI client</a> for better presenting the testing result.</p>
 
 <ol>
-  <li>
-    <p>Start Trex server with default configuration file.</p>
+  <li>Start Trex server with default configuration file.</li>
+</ol>
 
-    <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15</pre></td><td class="code"><pre class="highlight"><code><span class="o">[</span>root@Cisco-Trex v2.41]# <span class="nb">cat</span> /etc/trex_cfg.yaml 
-- port_limit      : 2
-  version         : 2
-<span class="c">#List of interfaces. Change to suit your setup. Use ./dpdk_setup_ports.py -s to see available options</span>
-  interfaces    : <span class="o">[</span><span class="s2">"eth2"</span>,<span class="s2">"eth3"</span><span class="o">]</span> 
-  port_info       :  <span class="c"># Port IPs. Change to suit your needs. In case of loopback, you can leave as is.</span>
-          - ip         : 172.16.150.2
-            default_gw : 172.16.150.1
-          - ip         : 172.16.200.2
-            default_gw : 172.16.200.1
+<div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15</pre></td><td class="code"><pre class="highlight"><code>   <span class="o">[</span>root@Cisco-Trex v2.41]# <span class="nb">cat</span> /etc/trex_cfg.yaml 
+   - port_limit      : 2
+     version         : 2
+   <span class="c">#List of interfaces. Change to suit your setup. Use ./dpdk_setup_ports.py -s to see available options</span>
+     interfaces    : <span class="o">[</span><span class="s2">"eth2"</span>,<span class="s2">"eth3"</span><span class="o">]</span> 
+     port_info       :  <span class="c"># Port IPs. Change to suit your needs. In case of loopback, you can leave as is.</span>
+             - ip         : 172.16.150.2
+               default_gw : 172.16.150.1
+             - ip         : 172.16.200.2
+               default_gw : 172.16.200.1
    
-<span class="o">[</span>root@Cisco-Trex v2.41]# ./t-rex-64 <span class="nt">-i</span>
-Killing Scapy server... Scapy server is killed
-Starting Scapy server.... Scapy server is started
-The ports are bound/configured.
-</code></pre></td></tr></tbody></table></div>    </div>
-  </li>
-  <li>
-    <p>Open Trex GUI client and connect to the server:</p>
+   <span class="o">[</span>root@Cisco-Trex v2.41]# ./t-rex-64 <span class="nt">-i</span>
+   Killing Scapy server... Scapy server is killed
+   Starting Scapy server.... Scapy server is started
+   The ports are bound/configured.
+</code></pre></td></tr></tbody></table></div></div>
 
-    <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png" alt="image-20191019155022256" /></p>
-  </li>
-  <li>
-    <p>Acquire Port 0 which is mapping to eth2, port 1 to eth3.</p>
+<ol>
+  <li>Open Trex GUI client and connect to the server:</li>
+</ol>
 
-    <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png" alt="image-20191019154829306" /></p>
-  </li>
-  <li>
-    <p>Convert Python code to YAML file <strong>(Profile)</strong>, and add the profile associating with Port 0</p>
-  </li>
+<p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png" alt="image-20191019155022256" /></p>
+
+<ol>
+  <li>Acquire Port 0 which is mapping to eth2, port 1 to eth3.</li>
+</ol>
+
+<p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png" alt="image-20191019154829306" /></p>
+
+<ol>
+  <li>Convert Python code to YAML file <strong>(Profile)</strong>, and add the profile associating with Port 0</li>
 </ol>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22</pre></td><td class="code"><pre class="highlight"><code><span class="o">[</span>root@Cisco-Trex v2.41]# ./stl-sim <span class="nt">-f</span> stl/flow_stats_latency.py <span class="nt">--yaml</span> <span class="o">&gt;</span> stl/flow_stats_latency.yaml 
@@ -611,12 +612,10 @@ The ports are bound/configured.
 <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png" alt="image-20191019164800639" /></p>
 
 <ol>
-  <li>
-    <p>Now, it’s time to fire up Trex</p>
-
-    <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png" alt="image-20191019180212740" /></p>
-  </li>
+  <li>Now, it’s time to fire up Trex</li>
 </ol>
+
+<p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png" alt="image-20191019180212740" /></p>
 
 <p>Navigate to “Latency” tab, check the counters of “dropped”.</p>
 
