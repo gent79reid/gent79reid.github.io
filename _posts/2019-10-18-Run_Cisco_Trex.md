@@ -179,7 +179,7 @@ Change Rate parameter to "pps/1.0k", so we can circulate the time of network con
 
 **Important:**  <u>Check RX Stats and Latency enabled, PG ID could be assigned to integer and used to track multiple streams  </u>
 
-***6. Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.***
+***6. Use Packet Editor to manipulate packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.***
 
 ![image-20191019164800639](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png)
 
