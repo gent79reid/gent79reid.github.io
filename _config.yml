@@ -226,9 +226,9 @@ social_icons:
   enable: true
   # Icon Mappings.
   # KeyMapsToSocialItemKey: NameOfTheIconFromFontAwesome
-  GitHub: github
-  Twitter: twitter
-  Weibo: weibo
+  GitHub: https://github.com/gent79reid
+  Twitter: https://twitter/Gent791
+ 
 
 
 # Sidebar Avatar
@@ -353,7 +353,7 @@ custom_logo:
 # Available value:
 #    normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: normal
+highlight_theme: night
 
 
 # ---------------------------------------------------------------
@@ -380,8 +380,8 @@ han: false
 
 # Disqus
 disqus:
-  enable: false
-  shortname:
+  enable: true
+  shortname: reidcheng
   count: true
   # hide comments (visitors need to click to load the comments)
   # count need to be false when hide is true
@@ -462,7 +462,7 @@ gitalk:
 #google_site_verification:
 
 # Google Analytics
-#google_analytics:
+google_analytics: UA-138431802-1
 
 # Yandex Webmaster tools verification setting
 # See: https://webmaster.yandex.ru/
@@ -491,8 +491,8 @@ facebook_sdk:
   enable: false
   app_id:       #<app_id>
   fb_admin:     #<user_id>
-  like_button:  #true
-  webmaster:    #true
+  like_button:  true
+  webmaster:    true
 
 # Facebook comments plugin
 # This plugin depends on Facebook SDK.

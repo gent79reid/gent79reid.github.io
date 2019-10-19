@@ -1,23 +1,14 @@
 ---
 
 layout: post
-title: "Run Cisco Trex"
-description: "The Deep Dive of Cisco Trex"
+title: "Running Cisco Trex"
+description: "This post will cover some basic usages of Cisco Trex, show you how to simply launch Trex to validate your DUT in home lab."
 categories: [Tools]
 tags: [Cisco,Trafffic Generator]
+comments: true
 redirect_from:
   - /2019/10/18/
 ---
-
-[Install Cisco Trex](#Install-Cisco-Trex)
-
-[Some Trex Terminologies](#Some-Trex-Terminologies)
-
-[Using Trex to generate simple traffic](#Using-Trex-to-generate-simple-traffic)
-
-
-
-**NOT COMPLETE**
 
 **Side Note** This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn't have very fancy GUI client like Spirent, but its GUI client is getting improved a lot. 
 

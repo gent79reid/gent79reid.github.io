@@ -10,7 +10,7 @@ redirect_from:
 
 Failed to install certificate for vBond and vSmart!
 
-![BA326A29-A9CB-4222-B4F6-020F6325EB87](/assets/images/screenshots/BA326A29-A9CB-4222-B4F6-020F6325EB87.png)
+![BA326A29-A9CB-4222-B4F6-020F6325EB87](/assets/images/BA326A29-A9CB-4222-B4F6-020F6325EB87.png)
 
 I think I should install CA root certificate on vBond and vSmart first, if don’t, how the two trust the signed certificate from the CA ?
 After added vBond on vManage, the CA root certificate has been pushed down it, there is no need to make manual provision. 

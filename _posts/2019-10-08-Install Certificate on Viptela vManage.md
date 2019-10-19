@@ -25,7 +25,7 @@ Here is the high-level procedure to generate and install a signed certificate on
 
 This is how it looks like after you populate other fields in the certificate form.
 
-   ![](/assets/images/screenshots/2019-10-08/image-20191008154222354.png)
+   ![](/assets/images/2019-10-08/image-20191008154222354.png)
 
 
 **2. Install the CA root certificate on vManage**
