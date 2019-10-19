@@ -39,7 +39,9 @@ Trex has stateful and advanced stateful mode, you can think of stateful testing 
 
 **Profile**
 
-Profile is the piece of Python code, which uses Scapy module to build packets. The profile can be invoked directly from Trex interactive mode with **start** command. 
+Profile is a list of streams, which composes of **Three** blocks : Scapy notation packet, Field Engine and TX mode. The profile can be invoked directly from Trex interactive mode with **start** command. 
+
+![image-20191019221526328](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019221526328.png)
 
 The below is a profile sample:
 
@@ -100,8 +102,6 @@ Run the above stream:
 ```bash
 trex>start -f stl/udp_1pkt_simple.py -m 10mbps -a 
 ```
-To verify network convergence, use **stateless mode** plus rx stats feature. 
-
 # Using Trex to generate simple traffic
 
 Here is the lab which I am building to verify Cisco Viptela SD-WAN solution, the lab is running on the top of EVE-NG, I have to admit that eve-ng is very user-friendly, easy learning-curve and excellent UI to draw your arbitrary topology. After paid for the professional license, you can enjoy docker and more fancy topology drawing, most importantly PRO version has integrated the link quality simulation, saving your time to use [linux-netem](https://wiki.linuxfoundation.org/networking/netem) or [wanem](http://wanem.sourceforge.net/). 

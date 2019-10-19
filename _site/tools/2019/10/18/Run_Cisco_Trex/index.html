@@ -119,6 +119,7 @@
 <meta property="og:site_name" content="Gent79">
 <meta property="og:description" content="This post will cover some basic usages of Cisco Trex, show you how to simply launch Trex to validate your DUT in home lab.">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019221526328.png">
 <meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png">
 <meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png">
 <meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png">
@@ -129,7 +130,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Running Cisco Trex">
 <meta name="twitter:description" content="This post will cover some basic usages of Cisco Trex, show you how to simply launch Trex to validate your DUT in home lab.">
-<meta name="twitter:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png">
+<meta name="twitter:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019221526328.png">
 
 
 <script type="text/javascript" id="hexo.configurations">
@@ -461,7 +462,9 @@ trexcisco/trex-dev                 Official TRex development environment        
 
 <p><strong>Profile</strong></p>
 
-<p>Profile is the piece of Python code, which uses Scapy module to build packets. The profile can be invoked directly from Trex interactive mode with <strong>start</strong> command.</p>
+<p>Profile is a list of streams, which composes of <strong>Three</strong> blocks : Scapy notation packet, Field Engine and TX mode. The profile can be invoked directly from Trex interactive mode with <strong>start</strong> command.</p>
+
+<p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019221526328.png" alt="image-20191019221526328" /></p>
 
 <p>The below is a profile sample:</p>
 
@@ -518,8 +521,6 @@ trexcisco/trex-dev                 Official TRex development environment        
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>trex&gt;start <span class="nt">-f</span> stl/udp_1pkt_simple.py <span class="nt">-m</span> 10mbps <span class="nt">-a</span> 
 </code></pre></td></tr></tbody></table></div></div>
-<p>To verify network convergence, use <strong>stateless mode</strong> plus rx stats feature.</p>
-
 <h1 id="using-trex-to-generate-simple-traffic">Using Trex to generate simple traffic</h1>
 
 <p>Here is the lab which I am building to verify Cisco Viptela SD-WAN solution, the lab is running on the top of EVE-NG, I have to admit that eve-ng is very user-friendly, easy learning-curve and excellent UI to draw your arbitrary topology. After paid for the professional license, you can enjoy docker and more fancy topology drawing, most importantly PRO version has integrated the link quality simulation, saving your time to use <a href="https://wiki.linuxfoundation.org/networking/netem">linux-netem</a> or <a href="http://wanem.sourceforge.net/">wanem</a>.</p>

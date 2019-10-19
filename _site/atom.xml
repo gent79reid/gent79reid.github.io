@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-19T19:16:43+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Gent79</title><subtitle>My Blog on Github</subtitle><author><name>Reid Cheng</name></author><entry><title type="html">Running Cisco Trex</title><link href="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/" rel="alternate" type="text/html" title="Running Cisco Trex" /><published>2019-10-18T00:00:00+08:00</published><updated>2019-10-18T00:00:00+08:00</updated><id>http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex</id><content type="html" xml:base="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/">&lt;p&gt;&lt;strong&gt;Side Note&lt;/strong&gt; This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn’t have very fancy GUI client like Spirent, but its GUI client is getting improved a lot.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-19T22:17:42+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Gent79</title><subtitle>My Blog on Github</subtitle><author><name>Reid Cheng</name></author><entry><title type="html">Running Cisco Trex</title><link href="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/" rel="alternate" type="text/html" title="Running Cisco Trex" /><published>2019-10-18T00:00:00+08:00</published><updated>2019-10-18T00:00:00+08:00</updated><id>http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex</id><content type="html" xml:base="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/">&lt;p&gt;&lt;strong&gt;Side Note&lt;/strong&gt; This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn’t have very fancy GUI client like Spirent, but its GUI client is getting improved a lot.&lt;/p&gt;
 
 &lt;h1 id=&quot;install-cisco-trex&quot;&gt;Install Cisco Trex&lt;/h1&gt;
 
@@ -26,7 +26,9 @@ trexcisco/trex-dev                 Official TRex development environment        
 
 &lt;p&gt;&lt;strong&gt;Profile&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;Profile is the piece of Python code, which uses Scapy module to build packets. The profile can be invoked directly from Trex interactive mode with &lt;strong&gt;start&lt;/strong&gt; command.&lt;/p&gt;
+&lt;p&gt;Profile is a list of streams, which composes of &lt;strong&gt;Three&lt;/strong&gt; blocks : Scapy notation packet, Field Engine and TX mode. The profile can be invoked directly from Trex interactive mode with &lt;strong&gt;start&lt;/strong&gt; command.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019221526328.png&quot; alt=&quot;image-20191019221526328&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The below is a profile sample:&lt;/p&gt;
 
@@ -83,8 +85,6 @@ trexcisco/trex-dev                 Official TRex development environment        
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;trex&amp;gt;start &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; stl/udp_1pkt_simple.py &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 10mbps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;To verify network convergence, use &lt;strong&gt;stateless mode&lt;/strong&gt; plus rx stats feature.&lt;/p&gt;
-
 &lt;h1 id=&quot;using-trex-to-generate-simple-traffic&quot;&gt;Using Trex to generate simple traffic&lt;/h1&gt;
 
 &lt;p&gt;Here is the lab which I am building to verify Cisco Viptela SD-WAN solution, the lab is running on the top of EVE-NG, I have to admit that eve-ng is very user-friendly, easy learning-curve and excellent UI to draw your arbitrary topology. After paid for the professional license, you can enjoy docker and more fancy topology drawing, most importantly PRO version has integrated the link quality simulation, saving your time to use &lt;a href=&quot;https://wiki.linuxfoundation.org/networking/netem&quot;&gt;linux-netem&lt;/a&gt; or &lt;a href=&quot;http://wanem.sourceforge.net/&quot;&gt;wanem&lt;/a&gt;.&lt;/p&gt;
