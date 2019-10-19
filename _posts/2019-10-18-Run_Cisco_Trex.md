@@ -105,13 +105,9 @@ trex>start -f stl/udp_1pkt_simple.py -m 10mbps -a
 
 To verify network convergence, use **stateless mode** plus rx stats feature. 
 
+#Using Trex to generate simple traffic
 
-
-
-
-# Using Trex to generate simple traffic
-
- 
+Here is the lab which I am building to verify Cisco Viptela SD-WAN solution, the lab is running on the top of EVE-NG, I have to admit that eve-ng is very user-friendly, easy learning-curve and excellent UI to draw your arbitrary topology. After paid for the professional license, you can enjoy docker and more fancy topology drawing, most importantly PRO version has integrated the link quality simulation, saving your time to use linux-netem or wanem 
 
 
 
