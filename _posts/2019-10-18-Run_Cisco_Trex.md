@@ -116,7 +116,7 @@ To start with one simple stateless testing, Trex will generate a stream of UDP t
 
 I will use [Trex GUI client](https://github.com/cisco-system-traffic-generator/trex-stateless-gui) for better presenting the testing result. 
 
-### Start Trex server with default configuration file.
+***1. Start Trex server with default configuration file.***
 
    ```bash
    [root@Cisco-Trex v2.41]# cat /etc/trex_cfg.yaml 
@@ -136,15 +136,15 @@ I will use [Trex GUI client](https://github.com/cisco-system-traffic-generator/t
    The ports are bound/configured.
    ```
 
-### Open Trex GUI client and connect to the server:
+***2. Open Trex GUI client and connect to the server:***
 
    ![image-20191019155022256](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png)
 
-### Acquire Port 0 which is mapping to eth2, port 1 to eth3.
+***3. Acquire Port 0 which is mapping to eth2, port 1 to eth3.***
 
    ![image-20191019154829306](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png)
 
-### Convert Python code to YAML file **(Profile)**, and add the profile associating with Port 0 
+***4. Convert Python code to YAML file **(Profile)**, and add the profile associating with Port 0.***
 
 ```bash
 [root@Cisco-Trex v2.41]# ./stl-sim -f stl/flow_stats_latency.py --yaml > stl/flow_stats_latency.yaml 
@@ -171,7 +171,7 @@ I will use [Trex GUI client](https://github.com/cisco-system-traffic-generator/t
     instructions: []
 ```
 
-### ***Traffic Profiles*** -> ***load Profile***  load up the profile 
+***5. Traffic Profiles -> load Profile load up the profile***
 
 ![image-20191019175826840](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png)
 
@@ -179,11 +179,11 @@ Change Rate parameter to "pps/1.0k", so we can circulate the time of network con
 
 **Important:**  <u>Check RX Stats and Latency enabled, PG ID could be assigned to integer and used to track multiple streams  </u>
 
-### Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.
+***6. Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.***
 
 ![image-20191019164800639](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png)
 
-### Now, it's time to fire up Trex
+***7. Now, it's time to fire up Trex***
 
    ![image-20191019180212740](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png)
 

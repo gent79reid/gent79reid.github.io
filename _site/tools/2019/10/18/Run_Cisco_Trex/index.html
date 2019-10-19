@@ -534,7 +534,7 @@ trexcisco/trex-dev                 Official TRex development environment        
 
 <p>I will use <a href="https://github.com/cisco-system-traffic-generator/trex-stateless-gui">Trex GUI client</a> for better presenting the testing result.</p>
 
-<h3 id="start-trex-server-with-default-configuration-file">Start Trex server with default configuration file.</h3>
+<p><strong><em>1. Start Trex server with default configuration file.</em></strong></p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15</pre></td><td class="code"><pre class="highlight"><code>   <span class="o">[</span>root@Cisco-Trex v2.41]# <span class="nb">cat</span> /etc/trex_cfg.yaml 
    - port_limit      : 2
@@ -553,15 +553,15 @@ trexcisco/trex-dev                 Official TRex development environment        
    The ports are bound/configured.
 </code></pre></td></tr></tbody></table></div></div>
 
-<h3 id="open-trex-gui-client-and-connect-to-the-server">Open Trex GUI client and connect to the server:</h3>
+<p><strong><em>2. Open Trex GUI client and connect to the server:</em></strong></p>
 
 <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png" alt="image-20191019155022256" /></p>
 
-<h3 id="acquire-port-0-which-is-mapping-to-eth2-port-1-to-eth3">Acquire Port 0 which is mapping to eth2, port 1 to eth3.</h3>
+<p><strong><em>3. Acquire Port 0 which is mapping to eth2, port 1 to eth3.</em></strong></p>
 
 <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png" alt="image-20191019154829306" /></p>
 
-<h3 id="convert-python-code-to-yaml-file-profile-and-add-the-profile-associating-with-port-0">Convert Python code to YAML file <strong>(Profile)</strong>, and add the profile associating with Port 0</h3>
+<p><strong><em>4. Convert Python code to YAML file **(Profile)**, and add the profile associating with Port 0.</em></strong></p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20<br/>21<br/>22</pre></td><td class="code"><pre class="highlight"><code><span class="o">[</span>root@Cisco-Trex v2.41]# ./stl-sim <span class="nt">-f</span> stl/flow_stats_latency.py <span class="nt">--yaml</span> <span class="o">&gt;</span> stl/flow_stats_latency.yaml 
 <span class="o">[</span>root@Cisco-Trex v2.41]# <span class="nb">cat </span>stl/flow_stats_latency.yaml 
@@ -587,7 +587,7 @@ trexcisco/trex-dev                 Official TRex development environment        
     instructions: <span class="o">[]</span>
 </code></pre></td></tr></tbody></table></div></div>
 
-<h3 id="traffic-profiles---load-profile--load-up-the-profile"><strong><em>Traffic Profiles</em></strong> -&gt; <strong><em>load Profile</em></strong>  load up the profile</h3>
+<p><strong><em>5. Traffic Profiles -&gt; load Profile load up the profile</em></strong></p>
 
 <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png" alt="image-20191019175826840" /></p>
 
@@ -595,11 +595,11 @@ trexcisco/trex-dev                 Official TRex development environment        
 
 <p><strong>Important:</strong>  <u>Check RX Stats and Latency enabled, PG ID could be assigned to integer and used to track multiple streams  </u></p>
 
-<h3 id="use-packet-editor-to-alter-packet-content-remove-default-tcp-layer-and-add-udp-layer-also-update-srcdst-ip-address">Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.</h3>
+<p><strong><em>6. Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.</em></strong></p>
 
 <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png" alt="image-20191019164800639" /></p>
 
-<h3 id="now-its-time-to-fire-up-trex">Now, it’s time to fire up Trex</h3>
+<p><strong><em>7. Now, it’s time to fire up Trex</em></strong></p>
 
 <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png" alt="image-20191019180212740" /></p>
 
@@ -829,7 +829,7 @@ trexcisco/trex-dev                 Official TRex development environment        
             
               <div class="post-toc-content">
     <ol class=nav>
-      <li class="nav-item nav-level-1"> <a class="nav-link" href="#install-cisco-trex"> <span class="nav-number">1</span> <span class="nav-text">Install Cisco Trex</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#some-trex-terminologies"> <span class="nav-number">2</span> <span class="nav-text">Some Trex Terminologies</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#using-trex-to-generate-simple-traffic"> <span class="nav-number">3</span> <span class="nav-text">Using Trex to generate simple traffic</span> </a> <ol class="nav-child"> <li class="nav-item nav-level-3"> <a class="nav-link" href="#start-trex-server-with-default-configuration-file"> <span class="nav-number">3.1</span> <span class="nav-text">Start Trex server with default configuration file.</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#open-trex-gui-client-and-connect-to-the-server"> <span class="nav-number">3.2</span> <span class="nav-text">Open Trex GUI client and connect to the server:</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#acquire-port-0-which-is-mapping-to-eth2-port-1-to-eth3"> <span class="nav-number">3.3</span> <span class="nav-text">Acquire Port 0 which is mapping to eth2, port 1 to eth3.</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#convert-python-code-to-yaml-file-profile-and-add-the-profile-associating-with-port-0"> <span class="nav-number">3.4</span> <span class="nav-text">Convert Python code to YAML file (Profile), and add the profile associating with Port 0</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#traffic-profiles---load-profile--load-up-the-profile"> <span class="nav-number">3.5</span> <span class="nav-text">Traffic Profiles -&gt; load Profile load up the profile</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#use-packet-editor-to-alter-packet-content-remove-default-tcp-layer-and-add-udp-layer-also-update-srcdst-ip-address"> <span class="nav-number">3.6</span> <span class="nav-text">Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.</span> </a> </li> <li class="nav-item nav-level-3"> <a class="nav-link" href="#now-its-time-to-fire-up-trex"> <span class="nav-number">3.7</span> <span class="nav-text">Now, it’s time to fire up Trex</span> </a> </li> </ol> </li>
+      <li class="nav-item nav-level-1"> <a class="nav-link" href="#install-cisco-trex"> <span class="nav-number">1</span> <span class="nav-text">Install Cisco Trex</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#some-trex-terminologies"> <span class="nav-number">2</span> <span class="nav-text">Some Trex Terminologies</span> </a> </li> <li class="nav-item nav-level-1"> <a class="nav-link" href="#using-trex-to-generate-simple-traffic"> <span class="nav-number">3</span> <span class="nav-text">Using Trex to generate simple traffic</span> </a> </li>
     </ol>
   </div>
             
