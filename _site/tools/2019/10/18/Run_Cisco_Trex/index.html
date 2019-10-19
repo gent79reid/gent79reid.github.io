@@ -119,17 +119,17 @@
 <meta property="og:site_name" content="Gent79">
 <meta property="og:description" content="This post will cover some basic usages of Cisco Trex, show you how to simply launch Trex to validate your DUT in home lab.">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png">
-<meta property="og:image" content="../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png">
-<meta property="og:image" content="../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png">
-<meta property="og:image" content="/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png">
-<meta property="og:image" content="../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png">
-<meta property="og:image" content="/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png">
-<meta property="og:image" content="/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180405409.png">
+<meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png">
+<meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png">
+<meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png">
+<meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png">
+<meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png">
+<meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png">
+<meta property="og:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180405409.png">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Running Cisco Trex">
 <meta name="twitter:description" content="This post will cover some basic usages of Cisco Trex, show you how to simply launch Trex to validate your DUT in home lab.">
-<meta name="twitter:image" content="../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png">
+<meta name="twitter:image" content="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png">
 
 
 <script type="text/javascript" id="hexo.configurations">
@@ -518,14 +518,13 @@ trexcisco/trex-dev                 Official TRex development environment        
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><table style="margin: 0px"><tbody><tr><td class="gutter"><pre>1</pre></td><td class="code"><pre class="highlight"><code>trex&gt;start <span class="nt">-f</span> stl/udp_1pkt_simple.py <span class="nt">-m</span> 10mbps <span class="nt">-a</span> 
 </code></pre></td></tr></tbody></table></div></div>
-
 <p>To verify network convergence, use <strong>stateless mode</strong> plus rx stats feature.</p>
 
 <p>#Using Trex to generate simple traffic</p>
 
 <p>Here is the lab which I am building to verify Cisco Viptela SD-WAN solution, the lab is running on the top of EVE-NG, I have to admit that eve-ng is very user-friendly, easy learning-curve and excellent UI to draw your arbitrary topology. After paid for the professional license, you can enjoy docker and more fancy topology drawing, most importantly PRO version has integrated the link quality simulation, saving your time to use <a href="https://wiki.linuxfoundation.org/networking/netem">linux-netem</a> or <a href="http://wanem.sourceforge.net/">wanem</a>.</p>
 
-<p><img src="../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png" alt="image-20191019155002861" /></p>
+<p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png" alt="image-20191019155002861" /></p>
 
 <p>Please avoid the part of SD-WAN components, we will only focus on Cisco Trex on the right-hand side, I will write other posts to walk through the steps of setting up Cisco Viptela SD-WAN on all virtualized environment.</p>
 
@@ -559,16 +558,15 @@ The ports are bound/configured.
   <li>
     <p>Open Trex GUI client and connect to the server:</p>
 
-    <p><img src="../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png" alt="image-20191019155022256" /></p>
+    <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png" alt="image-20191019155022256" /></p>
   </li>
   <li>
     <p>Acquire Port 0 which is mapping to eth2, port 1 to eth3.</p>
 
-    <p><img src="../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png" alt="image-20191019154829306" /></p>
-
-    <ol>
-      <li>Convert Python code to YAML file <strong>(Profile)</strong>, and add the profile associating with Port 0</li>
-    </ol>
+    <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png" alt="image-20191019154829306" /></p>
+  </li>
+  <li>
+    <p>Convert Python code to YAML file <strong>(Profile)</strong>, and add the profile associating with Port 0</p>
   </li>
 </ol>
 
@@ -600,7 +598,7 @@ The ports are bound/configured.
   <li><strong><em>Traffic Profiles</em></strong> -&gt; <strong><em>load Profile</em></strong>  load up the profile</li>
 </ol>
 
-<p><img src="/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png" alt="image-20191019175826840" /></p>
+<p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png" alt="image-20191019175826840" /></p>
 
 <p>Change Rate parameter to “pps/1.0k”, so we can circulate the time of network convergency. (one packet loss = the 1ms loss).</p>
 
@@ -610,19 +608,19 @@ The ports are bound/configured.
   <li>Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.</li>
 </ol>
 
-<p><img src="../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png" alt="image-20191019164800639" /></p>
+<p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png" alt="image-20191019164800639" /></p>
 
 <ol>
   <li>
     <p>Now, it’s time to fire up Trex</p>
 
-    <p><img src="/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png" alt="image-20191019180212740" /></p>
+    <p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png" alt="image-20191019180212740" /></p>
   </li>
 </ol>
 
 <p>Navigate to “Latency” tab, check the counters of “dropped”.</p>
 
-<p><img src="/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180405409.png" alt="image-20191019180405409" /></p>
+<p><img src="/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180405409.png" alt="image-20191019180405409" /></p>
 
 
 

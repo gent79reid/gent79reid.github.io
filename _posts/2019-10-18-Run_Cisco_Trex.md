@@ -100,16 +100,13 @@ Run the above stream:
 ```bash
 trex>start -f stl/udp_1pkt_simple.py -m 10mbps -a 
 ```
-
-
-
 To verify network convergence, use **stateless mode** plus rx stats feature. 
 
 #Using Trex to generate simple traffic
 
 Here is the lab which I am building to verify Cisco Viptela SD-WAN solution, the lab is running on the top of EVE-NG, I have to admit that eve-ng is very user-friendly, easy learning-curve and excellent UI to draw your arbitrary topology. After paid for the professional license, you can enjoy docker and more fancy topology drawing, most importantly PRO version has integrated the link quality simulation, saving your time to use [linux-netem](https://wiki.linuxfoundation.org/networking/netem) or [wanem](http://wanem.sourceforge.net/). 
 
-![image-20191019155002861](../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png)
+![image-20191019155002861](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png)
 
 Please avoid the part of SD-WAN components, we will only focus on Cisco Trex on the right-hand side, I will write other posts to walk through the steps of setting up Cisco Viptela SD-WAN on all virtualized environment. 
 
@@ -141,13 +138,13 @@ I will use [Trex GUI client](https://github.com/cisco-system-traffic-generator/t
 
 2. Open Trex GUI client and connect to the server:
 
-   ![image-20191019155022256](../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png)
+   ![image-20191019155022256](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png)
 
 3. Acquire Port 0 which is mapping to eth2, port 1 to eth3.
 
-   ![image-20191019154829306](../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png)
+   ![image-20191019154829306](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png)
 
-   4. Convert Python code to YAML file **(Profile)**, and add the profile associating with Port 0 
+4. Convert Python code to YAML file **(Profile)**, and add the profile associating with Port 0 
 
 ```bash
 [root@Cisco-Trex v2.41]# ./stl-sim -f stl/flow_stats_latency.py --yaml > stl/flow_stats_latency.yaml 
@@ -178,7 +175,7 @@ I will use [Trex GUI client](https://github.com/cisco-system-traffic-generator/t
 
 5. ***Traffic Profiles*** -> ***load Profile***  load up the profile 
 
-![image-20191019175826840](/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png)
+![image-20191019175826840](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png)
 
 Change Rate parameter to "pps/1.0k", so we can circulate the time of network convergency. (one packet loss = the 1ms loss).
 
@@ -186,15 +183,15 @@ Change Rate parameter to "pps/1.0k", so we can circulate the time of network con
 
 6. Use Packet Editor to alter packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.
 
-![image-20191019164800639](../assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png)
+![image-20191019164800639](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png)
 
 7. Now, it's time to fire up Trex
 
-   ![image-20191019180212740](/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png)
+   ![image-20191019180212740](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png)
 
 Navigate to "Latency" tab, check the counters of "dropped".
 
-![image-20191019180405409](/Users/xincheng/Box Sync/Gent79ME_Blog/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180405409.png)
+![image-20191019180405409](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180405409.png)
 
 
 
