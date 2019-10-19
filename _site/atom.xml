@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-19T04:48:39+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Gent79</title><subtitle>Elegant theme for Jekyll.</subtitle><author><name>Reid Cheng</name></author><entry><title type="html">Run Cisco Trex</title><link href="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/" rel="alternate" type="text/html" title="Run Cisco Trex" /><published>2019-10-18T00:00:00+08:00</published><updated>2019-10-18T00:00:00+08:00</updated><id>http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex</id><content type="html" xml:base="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/">&lt;p&gt;&lt;a href=&quot;#Install-Cisco-Trex&quot;&gt;Install Cisco Trex&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;#Some-Trex-Terminologies&quot;&gt;Some Trex Terminologies&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;#Using-Trex-to-generate-simple-traffic&quot;&gt;Using Trex to generate simple traffic&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;NOT COMPLETE&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Side Note&lt;/strong&gt; This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn’t have very fancy GUI client like Spirent, but its GUI client is getting improved a lot.&lt;/p&gt;
+
+&lt;h1 id=&quot;install-cisco-trex&quot;&gt;Install Cisco Trex&lt;/h1&gt;
+
+&lt;p&gt;The quickest way to test Trex is to running its docker version, which might not be the latest version.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜# docker search trex
+NAME                               DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+trexcisco/trex                     Official&lt;span class=&quot;s1&quot;&gt;'s Cisco TRex traffic generator for …   7
+trexcisco/trex-dev                 Official TRex development environment           1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In this test, I am not catering for testing its performance, as all components in my lab are hosting on my PC with only 32G, 8 x Core CPU. Please navigate the official installation guide &lt;a href=&quot;https://trex-tgn.cisco.com/trex/doc/trex_manual.html/&quot;&gt;Cisco Trex Installation Guide&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;some-trex-terminologies&quot;&gt;Some Trex Terminologies&lt;/h1&gt;
+
+&lt;p&gt;If you don’t have solid appreciation of these terms, you might run into some troubles while playing Trex, I suggest to take some time to understand them before you go.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Stateless&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Mainly for testing L2 &amp;amp; L3 functions, relevant mostly for a switch or router. Remember that in stateless mode, there is no concepts of flow/client/server. You can define a stream with one packet template, sending from one port to another one on the same Trex instance.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Stateful&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Trex has stateful and advanced stateful mode, you can think of stateful testing like generating some flows with the real application behavior, it is useful for testing application-aware DUT, like NAT, IPS, Load-balancer, etc. The easiest way to use stateful testing is to replay the recorded pcap onto the wire, with &lt;strong&gt;Trex field engine&lt;/strong&gt; you can alter src/dst IP address of the packets on the fly.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Profile&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Profile is the piece of Python code, which uses Scapy module to build packets. The profile can be invoked directly from Trex interactive mode with &lt;strong&gt;start&lt;/strong&gt; command.&lt;/p&gt;
+
+&lt;p&gt;The below is a profile sample:&lt;/p&gt;
+
+&lt;div class=&quot;language-py highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f9e8965416c&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;41&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# cat stl/flow_stats_latency.py&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;trex_stl_lib.api&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;STLS1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;&quot;&quot;&quot;
+    Create flow stat latency stream of UDP packet.
+    Can specify using tunables the packet length (fsize) and packet group id (pg_id)
+    Since we can't have two latency streams with same pg_id, in order to be able to start this profile
+    on more than one port, we add port_id to the pg_id
+    Notice that for perfomance reasons, latency streams are not affected by -m flag, so
+    you can only change the pps value by editing the code.
+    &quot;&quot;&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__init__&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fsize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pg_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;_create_stream&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fsize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# HW will add 4 bytes ethernet FCS&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;base_pkt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Ether&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;src&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;16.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dst&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;48.0.0.1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UDP&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dport&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sport&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1025&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;pad&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base_pkt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'x'&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;pkt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STLPktBuilder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pkt&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base_pkt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;STLStream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;packet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pkt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+                          &lt;span class=&quot;n&quot;&gt;mode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STLTXCont&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pps&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                          &lt;span class=&quot;n&quot;&gt;flow_stats&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STLFlowLatencyStats&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pg_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pg_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+               &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_streams&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fsize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pg_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fsize&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fsize&lt;/span&gt;
+        &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pg_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pg_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'port_id'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;_create_stream&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+
+
+&lt;span class=&quot;c&quot;&gt;# dynamic load - used for trex console or simulator&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;register&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;():&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STLS1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Start Trex server:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[bash]&amp;gt;sudo ./t-rex-64 -i
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Attach local python client to the server:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;bash]&amp;gt;trex-console                                                    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Run the above stream:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;trex&amp;gt;start &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; stl/udp_1pkt_simple.py &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 10mbps &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To verify network convergence, use &lt;strong&gt;stateless mode&lt;/strong&gt; plus rx stats feature.&lt;/p&gt;
+
+&lt;h1 id=&quot;using-trex-to-generate-simple-traffic&quot;&gt;Using Trex to generate simple traffic&lt;/h1&gt;</content><author><name>Reid Cheng</name></author><category term="Cisco" /><category term="Trafffic Generator" /><summary type="html">Install Cisco Trex</summary></entry><entry><title type="html">Install Certificate on Viptela vManage</title><link href="http://localhost:4000/sd-wan/2019/10/08/Install-Certificate-on-Viptela-vManage/" rel="alternate" type="text/html" title="Install Certificate on Viptela vManage" /><published>2019-10-08T00:00:00+08:00</published><updated>2019-10-08T00:00:00+08:00</updated><id>http://localhost:4000/sd-wan/2019/10/08/Install%20Certificate%20on%20Viptela%20vManage</id><content type="html" xml:base="http://localhost:4000/sd-wan/2019/10/08/Install-Certificate-on-Viptela-vManage/">&lt;p&gt;Viptela vManage 18.4 and later offers the option to use Enterprise CA root certificate to build the certificate chain. This is a piece of good news for people who wants to build their own lab without requesting the official signed certificates from Symantec.&lt;/p&gt;
+
+&lt;p&gt;Here is the high-level procedure to generate and install a signed certificate on vManage.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. Install CA root on your PC&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;For MAC user, XCA is one of the user-friendly tool to manage certificates. &lt;a href=&quot;https://hohnstaedt.de/xca/&quot;&gt;https://hohnstaedt.de/xca/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Generate self-signed root certificate which will be used to sign CSR from vManage.&lt;/p&gt;
+
+&lt;p&gt;Choose “Create a self signed certificates”, and use “[default] CA” template. For the first time, you will need to generate a pair of public/private key.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-08/image-20191008153457839.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is how it looks like after you populate other fields in the certificate form.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/screenshots/2019-10-08/image-20191008154222354.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. Install the CA root certificate on vManage&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;vManage needs to trust the root certificate before it can accepte the signed certificate from it, this is natural trustship.&lt;/p&gt;
+
+&lt;p&gt;on vManage go to “Adminstriation” -&amp;gt; “Controller Certificate Authorization”, choose “Enterprise root certifcate”
+   &lt;img src=&quot;/assets/images/2019-10-08/image-20191008154707876.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Paste or install CA root to it. I suggest you to export CA root certificate in .crt format and use any text editor to open up, copy and paste to here. vManage only accepts .pem format, somehow the PEM format certificates exported from XCA have some issues to get imported properly on vManage.&lt;/p&gt;
+
+&lt;p&gt;Next, setup CSR relevant values on the same page,&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-08/image-20191008155113461.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. Generate, Sign CSR and install the signed certificate&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;then save and go to vManage “Configuration” -&amp;gt; “Certificates” -&amp;gt; “Controller” tab. Select vManage node and click the … option to display the drop-down menu, generate CSR.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-08/image-20191008155435365.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Download the CSR and import into XCA, sign it with &lt;strong&gt;your CA root certificate.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-08/image-20191008155622871.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Export the signed CSR and install it on vManage.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-08/image-20191008155939110.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It will automatically push down to vBond, making sure you will see the successful result like this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-08/image-20191008160308281.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you see any errors, double-check the root certificate which you installed on vManage is valid, and the signed certificates from CA root is also correct.&lt;/p&gt;</content><author><name>Reid Cheng</name></author><category term="Cisco" /><category term="Viptela" /><category term="CA" /><summary type="html">Viptela vManage 18.4 and later offers the option to use Enterprise CA root certificate to build the certificate chain. This is a piece of good news for people who wants to build their own lab without requesting the official signed certificates from Symantec.</summary></entry><entry><title type="html">Fix Root-ca-chain issue on Viptela vBond</title><link href="http://localhost:4000/sd-wan/2019/10/08/fix-certificate-vbond/" rel="alternate" type="text/html" title="Fix Root-ca-chain issue on Viptela vBond" /><published>2019-10-08T00:00:00+08:00</published><updated>2019-10-08T00:00:00+08:00</updated><id>http://localhost:4000/sd-wan/2019/10/08/fix-certificate-vbond</id><content type="html" xml:base="http://localhost:4000/sd-wan/2019/10/08/fix-certificate-vbond/">&lt;p&gt;Failed to install certificate for vBond and vSmart!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/screenshots/BA326A29-A9CB-4222-B4F6-020F6325EB87.png&quot; alt=&quot;BA326A29-A9CB-4222-B4F6-020F6325EB87&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I think I should install CA root certificate on vBond and vSmart first, if don’t, how the two trust the signed certificate from the CA ?
+After added vBond on vManage, the CA root certificate has been pushed down it, there is no need to make manual provision.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vBond-DC# show certificate root-ca-cert | include Issuer:
+     Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign, Inc., &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign Trust Network, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2006 VeriSign, Inc. - For authorized use only, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign Class 3 Public Primary Certification Authority - G5
+           Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4894d39b-4dda-4056-8f60-7671128c5a91, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Viptela
+     Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CN, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;R&amp;amp;D/emailAddress&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;me@gent79.me
+     Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CN, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;R&amp;amp;D/emailAddress&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;me@gent79.me
+     Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CN, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;R&amp;amp;D/emailAddress&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;me@gent79.me
+     Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign, Inc., &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign Trust Network, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2006 VeriSign, Inc. - For authorized use only, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign Class 3 Public Primary Certification Authority - G5
+      Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign, Inc., &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign Trust Network, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2006 VeriSign, Inc. - For authorized use only, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign Class 3 Public Primary Certification Authority - G5
+      Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign, Inc., &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Class 3 Public Primary Certification Authority
+      Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DigiCert Inc, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;www.digicert.com, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DigiCert Global Root G2
+      Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign, Inc., &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign Trust Network, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;c&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2006 VeriSign, Inc. - For authorized use only, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;VeriSign Class 3 Public Primary Certification Authority - G5
+      Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DigiCert Inc, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;www.digicert.com, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DigiCert Global Root G2
+      Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DigiCert Inc, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;www.digicert.com, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DigiCert Global Root CA
+      Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;US, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DigiCert Inc, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;www.digicert.com, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;DigiCert Global Root CA
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Checking vBond root-ca-certificate, I saw 3 root certificates come from my CA, I want to remove them out and readd vBond.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vBond-DC# request root-cert-chain uninstall 
+Successfully uninstalled the root certificate chain
+vBond-DC# show certificate root-ca-cert             
+Error: No root-ca certificate found, or no root-ca certificate installed
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install root-cert manually from cli&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;​```bash
+vBond-DC# request root-cert-chain install scp://root@192.168.31.79:/home/gent79/viptela-ca.pem vpn 512
+Uploading root-ca-cert-chain via VPN 512
+Copying ... root@192.168.31.79:/home/gent79/viptela-ca.pem via VPN 512
+Warning: Permanently added '192.168.31.79' (ECDSA) to the list of known hosts.
+root@192.168.31.79's password: 
+viptela-ca.pem                                100% 1119   190.6KB/s   00:00    
+Installing the new root certificate chain
+Successfully installed the root certificate chain
+vBond-DC# show certificate root-ca-cert 
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 7333024940781608326 (0x65c42354e45e1d86)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=CN, OU=R&amp;amp;D/emailAddress=xincheng@cisco.com
+        Validity
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, from vManage install the signed certificate of vBond CSR. 
+&lt;img src=&quot;/assets/images/screenshots/image-20191008230321074.png&quot; alt=&quot;image-20191008230321074&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vBond-DC# show certificate installed 
+
+Server certificate
+&lt;span class=&quot;nt&quot;&gt;------------------&lt;/span&gt;
+
+Certificate:
+    Data:
+        Version: 3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        Serial Number: 6353158359898925232 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x582af3de2b9428b0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CN, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;R&amp;amp;D/emailAddress&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;chengreid@gmail.com
+        Validity
+            Not Before: Oct  8 10:20:00 2019 GMT
+            Not After : Oct  7 15:28:00 2020 GMT
+        Subject: &lt;span class=&quot;nv&quot;&gt;C&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;CN, &lt;span class=&quot;nv&quot;&gt;ST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;GZ, &lt;span class=&quot;nv&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;GY, &lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;gent79, &lt;span class=&quot;nv&quot;&gt;O&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;gent79, &lt;span class=&quot;nv&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;vbond-c79b53cb-860a-4f7b-bf71-257f2f64a2de-6.vManage-DC/emailAddress&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;chengreid@gmail.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2048 bit&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+                Modulus:
+                    00:c2:2a:ac:47:86:a2:20:07:49:87:7c:21:be:53:
+                    23:e9:bb:f9:d0:49:f2:f5:57:83:66:8f:93:71:84:
+                    a7:d0:7d:c1:5c:f0:6c:76:6a:59:4c:f5:56:a2:e0:
+                    84:94:92:9d:5a:2d:d0:be:39:4d:f6:d5:a8:aa:e4:
+                    0f:38:e0:c5:9d:08:84:4f:1a:6c:36:09:c5:6a:61:
+                    3e:f6:9a:94:81:d2:16:1b:0f:83:7f:73:e5:77:ba:
+                    02:72:bc:b4:e1:0c:2f:ec:5b:f5:b6:fe:11:ff:2d:
+                    b3:86:ef:be:86:e0:71:da:41:3a:0b:53:f3:c9:eb:
+                    3e:de:1d:53:28:f2:29:67:b0:f8:b4:2d:6f:2f:10:
+                    11:da:4d:99:20:07:74:7d:f7:27:fe:25:01:1a:41:
+                    5b:68:1a:cf:7d:ca:b8:c7:d2:1d:f7:af:a6:cb:6a:
+                    f0:8f:39:3e:be:90:4e:d2:7c:a9:4e:8a:21:cf:3b:
+                    &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt;:e6:b0:8f:65:3b:06:ff:97:6a:fb:87:3d:2c:ec:
+                    47:5e:f3:7b:7c:31:80:93:dc:33:70:78:c4:44:f2:
+                    fe:12:03:75:2c:b0:43:b0:1a:60:9e:c1:00:75:1c:
+                    95:59:b4:65:35:31:74:d8:12:85:35:05:53:44:b7:
+                    ad:51:d8:6f:20:d4:16:fa:35:ab:3c:a2:a3:e9:a6:
+                    6e:f5
+                Exponent: 65537 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x10001&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                C4:C2:AA:C7:2B:C1:3F:3A:B6:50:08:0E:B4:D9:5D:03:DD:C5:86:BF
+    Signature Algorithm: sha256WithRSAEncryption
+         18:44:9b:c9:a6:ea:06:a0:06:43:b2:43:fc:4e:b9:5f:d7:88:
+         ea:6c:d4:2a:32:3c:be:a5:bb:2c:3b:04:cd:6e:6d:c4:28:0d:
+         b6:2a:05:99:12:14:02:37:e8:54:29:dd:be:16:d2:d3:9f:7b:
+         7b:4d:fe:6e:7b:c1:a6:bd:18:5d:64:1e:81:71:b2:6f:58:6a:
+         62:9d:98:fc:d0:7f:de:42:80:19:0e:91:4f:cf:95:f7:f8:5a:
+         10:33:83:cc:3b:ab:78:2d:41:8e:a3:2c:b0:4a:42:28:a5:e6:
+         f8:af:9d:18:e8:eb:45:4f:65:88:39:a0:3f:83:ac:7c:c4:61:
+         a3:c5:54:fb:a7:d0:09:e2:37:82:73:9a:9e:6f:5e:02:4c:4f:
+         b9:73:83:d8:92:80:b1:86:60:61:5d:fb:df:7d:46:09:79:9e:
+         72:c8:ea:6f:d0:1b:13:51:f1:04:7a:a4:be:6f:0b:ed:d3:8c:
+         bb:06:11:83:33:ba:b1:88:71:fb:49:8a:d7:c1:fc:1c:4a:a0:
+         55:7e:3a:44:8f:ad:fd:1d:4c:be:11:f9:a3:ca:e4:d8:2d:7a:
+         2b:b3:60:80:b6:33:e4:9d:c5:30:25:03:28:75:0d:09:5b:4a:
+         0c:fb:dc:f2:7b:74:44:05:a7:54:1e:76:58:56:38:8e:2c:e6:
+         55:10:c1:72
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Reid Cheng</name></author><category term="Cisco" /><category term="Viptela" /><category term="CA" /><summary type="html">Failed to install certificate for vBond and vSmart!</summary></entry><entry><title type="html">Next Theme Tutorial</title><link href="http://localhost:4000/tutorial/2017/07/20/next-tutorial/" rel="alternate" type="text/html" title="Next Theme Tutorial" /><published>2017-07-20T00:00:00+08:00</published><updated>2017-07-20T00:00:00+08:00</updated><id>http://localhost:4000/tutorial/2017/07/20/next-tutorial</id><content type="html" xml:base="http://localhost:4000/tutorial/2017/07/20/next-tutorial/">&lt;blockquote&gt;
+  &lt;p&gt;NexT is a high quality elegant &lt;a href=&quot;https://jekyllrb.com&quot;&gt;Jekyll&lt;/a&gt; theme ported from &lt;a href=&quot;https://github.com/iissnan/hexo-theme-next&quot;&gt;Hexo Next&lt;/a&gt;. It is crafted from scratch, with love.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://simpleyyt.github.io/jekyll-theme-next/&quot;&gt;Live Preview&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;screenshots&quot;&gt;Screenshots&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Desktop
+&lt;img src=&quot;http://iissnan.com/nexus/next/desktop-preview.png&quot; alt=&quot;Desktop Preview&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Sidebar&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://iissnan.com/nexus/next/desktop-sidebar-preview.png&quot; alt=&quot;Desktop Sidebar Preview&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Sidebar (Post details page)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://iissnan.com/nexus/next/desktop-sidebar-toc.png&quot; alt=&quot;Desktop Sidebar Preview&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Mobile&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://iissnan.com/nexus/next/mobile.png&quot; alt=&quot;Mobile Preview&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;installation&quot;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;Check whether you have &lt;code class=&quot;highlighter-rouge&quot;&gt;Ruby 2.1.0&lt;/code&gt; or higher installed:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install &lt;code class=&quot;highlighter-rouge&quot;&gt;Bundler&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem install bundler
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Clone Jacman theme:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git clone https://github.com/Simpleyyt/jekyll-theme-next.git
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;jekyll-theme-next
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install Jekyll and other dependencies from the GitHub Pages gem:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Run your Jekyll site locally:&lt;/p&gt;
+
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;More Details：&lt;a href=&quot;https://help.github.com/articles/setting-up-your-github-pages-site-locally-with-jekyll/&quot;&gt;Setting up your GitHub Pages site locally with Jekyll&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;features&quot;&gt;Features&lt;/h2&gt;
+
+&lt;h3 id=&quot;multiple-languages-support-including-english--russian--french--german--simplified-chinese--traditional-chinese&quot;&gt;Multiple languages support, including: English / Russian / French / German / Simplified Chinese / Traditional Chinese.&lt;/h3&gt;
+
+&lt;p&gt;Default language is English.&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;language&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;en&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# language: zh-Hans&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# language: fr-FR&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# language: zh-hk&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# language: zh-tw&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# language: ru&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# language: de&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set &lt;code class=&quot;highlighter-rouge&quot;&gt;language&lt;/code&gt; field as following in site &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; to change to Chinese.&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;language&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zh-Hans&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;comment-support&quot;&gt;Comment support.&lt;/h3&gt;
+
+&lt;p&gt;NexT has native support for &lt;code class=&quot;highlighter-rouge&quot;&gt;DuoShuo&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;Disqus&lt;/code&gt; comment systems.&lt;/p&gt;
+
+&lt;p&gt;Add the following snippets to your &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;duoshuo&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;enable&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;shortname&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-duoshuo-shortname&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;OR&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;disqus_shortname&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-disqus-shortname&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;social-media&quot;&gt;Social Media&lt;/h3&gt;
+
+&lt;p&gt;NexT can automatically add links to your Social Media accounts:&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;social&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;GitHub&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-github-url&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;Twitter&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-twitter-url&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;Weibo&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-weibo-url&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;DouBan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-douban-url&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;ZhiHu&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;your-zhihu-url&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;feed-link&quot;&gt;Feed link.&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Show a feed link.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Set &lt;code class=&quot;highlighter-rouge&quot;&gt;rss&lt;/code&gt; field in theme’s &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt;, as the following value:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rss: false&lt;/code&gt; will totally disable feed link.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rss:  &lt;/code&gt; use sites’ feed link. This is the default option.&lt;/p&gt;
+
+    &lt;p&gt;Follow the installation instruction in the plugin’s README. After the configuration is done for this plugin, the feed link is ready too.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rss: http://your-feed-url&lt;/code&gt; set specific feed link.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;up-to-5-code-highlight-themes-built-in&quot;&gt;Up to 5 code highlight themes built-in.&lt;/h3&gt;
+
+&lt;p&gt;NexT uses &lt;a href=&quot;https://github.com/chriskempson/tomorrow-theme&quot;&gt;Tomorrow Theme&lt;/a&gt; with 5 themes for you to choose from.
+Next use &lt;code class=&quot;highlighter-rouge&quot;&gt;normal&lt;/code&gt; by default. Have a preview about &lt;code class=&quot;highlighter-rouge&quot;&gt;normal&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;night&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://iissnan.com/nexus/next/tomorrow-normal.png&quot; alt=&quot;Tomorrow Normal Preview&quot; /&gt;
+&lt;img src=&quot;http://iissnan.com/nexus/next/tomorrow-night.png&quot; alt=&quot;Tomorrow Night Preview&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Head over to &lt;a href=&quot;https://github.com/chriskempson/tomorrow-theme&quot;&gt;Tomorrow Theme&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;NexT comes with few configurations.&lt;/p&gt;
+
+&lt;div class=&quot;language-yml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;c1&quot;&gt;# Menu configuration.&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;menu&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;home&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;archives&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/archives&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Favicon&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;favicon&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/favicon.ico&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Avatar (put the image into next/source/images/)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# can be any image format supported by web browsers (JPEG,PNG,GIF,SVG,..)&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;avatar&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/default_avatar.png&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Code highlight theme&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# available: normal | night | night eighties | night blue | night bright&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;highlight_theme&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;normal&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Fancybox for image gallery&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;fancybox&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Specify the date when the site was setup&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;since&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2013&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;browser-support&quot;&gt;Browser support&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://iissnan.com/nexus/next/browser-support.png&quot; alt=&quot;Browser support&quot; /&gt;&lt;/p&gt;</content><author><name>Reid Cheng</name></author><summary type="html">NexT is a high quality elegant Jekyll theme ported from Hexo Next. It is crafted from scratch, with love. Live Preview Screenshots Desktop Sidebar Sidebar (Post details page) Mobile Installation Check whether you have Ruby 2.1.0 or higher installed: ruby --version Install Bundler: gem install bundler Clone Jacman theme: git clone https://github.com/Simpleyyt/jekyll-theme-next.git cd jekyll-theme-next Install Jekyll and other dependencies from the GitHub Pages gem: bundle install Run your Jekyll site locally: bundle exec jekyll server More Details：Setting up your GitHub Pages site locally with Jekyll Features Multiple languages support, including: English / Russian / French / German / Simplified Chinese / Traditional Chinese. Default language is English. language: en # language: zh-Hans # language: fr-FR # language: zh-hk # language: zh-tw # language: ru # language: de Set language field as following in site _config.yml to change to Chinese. language: zh-Hans Comment support. NexT has native support for DuoShuo and Disqus comment systems. Add the following snippets to your _config.yml: duoshuo: enable: true shortname: your-duoshuo-shortname OR disqus_shortname: your-disqus-shortname Social Media NexT can automatically add links to your Social Media accounts: social: GitHub: your-github-url Twitter: your-twitter-url Weibo: your-weibo-url DouBan: your-douban-url ZhiHu: your-zhihu-url Feed link. Show a feed link. Set rss field in theme’s _config.yml, as the following value: rss: false will totally disable feed link. rss: use sites’ feed link. This is the default option. Follow the installation instruction in the plugin’s README. After the configuration is done for this plugin, the feed link is ready too. rss: http://your-feed-url set specific feed link. Up to 5 code highlight themes built-in. NexT uses Tomorrow Theme with 5 themes for you to choose from. Next use normal by default. Have a preview about normal and night: Head over to Tomorrow Theme for more details. Configuration NexT comes with few configurations. # Menu configuration. menu: home: / archives: /archives # Favicon favicon: /favicon.ico # Avatar (put the image into next/source/images/) # can be any image format supported by web browsers (JPEG,PNG,GIF,SVG,..) avatar: /default_avatar.png # Code highlight theme # available: normal | night | night eighties | night blue | night bright highlight_theme: normal # Fancybox for image gallery fancybox: true # Specify the date when the site was setup since: 2013 Browser support</summary></entry><entry><title type="html">Highlight Test</title><link href="http://localhost:4000/test/2017/07/19/highlight-test/" rel="alternate" type="text/html" title="Highlight Test" /><published>2017-07-19T00:00:00+08:00</published><updated>2017-07-19T00:00:00+08:00</updated><id>http://localhost:4000/test/2017/07/19/highlight-test</id><content type="html" xml:base="http://localhost:4000/test/2017/07/19/highlight-test/">&lt;p&gt;This is a highlight test.&lt;/p&gt;
+
+&lt;h1 id=&quot;normal-block&quot;&gt;Normal block&lt;/h1&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;alert('Hello World!');
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;print 'helloworld'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;highlight-block&quot;&gt;Highlight block&lt;/h1&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Hello, world!'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'helloworld'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'foo'&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;using&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;arg2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;string&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Hello World&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Reid Cheng</name></author><summary type="html">This is a highlight test. Normal block alert('Hello World!'); print 'helloworld' Highlight block alert( 'Hello, world!' ); print 'helloworld' def foo puts 'foo' end def foo puts 'foo' end 1 2 3 def foo puts 'foo' end #include &amp;lt;iostream&amp;gt; using namespace std; void foo(int arg1, int arg2) { } int main() { string str; foo(1, 2); cout &amp;lt;&amp;lt; &quot;Hello World&quot; &amp;lt;&amp;lt; endl; return 0; }</summary></entry><entry><title type="html">Emoji Test</title><link href="http://localhost:4000/2015/09/19/emoji-test/" rel="alternate" type="text/html" title="Emoji Test" /><published>2015-09-19T00:00:00+08:00</published><updated>2015-09-19T00:00:00+08:00</updated><id>http://localhost:4000/2015/09/19/emoji-test</id><content type="html" xml:base="http://localhost:4000/2015/09/19/emoji-test/">&lt;p&gt;This is an emoji test. :smile: lol.&lt;/p&gt;
+
+&lt;p&gt;See emoji cheat sheet for more detail :wink: : &lt;a href=&quot;https://www.webpagefx.com/tools/emoji-cheat-sheet/&quot;&gt;https://www.webpagefx.com/tools/emoji-cheat-sheet/&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;:bowtie::smile::laughing::blush::smiley::relaxed::smirk:
+:heart_eyes::kissing_heart::kissing_closed_eyes::flushed::relieved::satisfied::grin:&lt;/p&gt;</content><author><name>Reid Cheng</name></author><summary type="html">This is an emoji test. :smile: lol.</summary></entry><entry><title type="html">Gallery Post</title><link href="http://localhost:4000/photo/2014/11/18/gallery-post/" rel="alternate" type="text/html" title="Gallery Post" /><published>2014-11-18T23:45:20+08:00</published><updated>2014-11-18T23:45:20+08:00</updated><id>http://localhost:4000/photo/2014/11/18/gallery-post</id><content type="html" xml:base="http://localhost:4000/photo/2014/11/18/gallery-post/">&lt;p&gt;Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/large/81b78497jw1emfgts2pt4j21hc0u0k1c.jpg&quot; alt=&quot;Wallbase - dgnfly (wallbase.cc/wallpaper/1384450)&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Etiam luctus mauris at mi sollicitudin quis malesuada nibh porttitor. Vestibulum non dapibus magna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin feugiat hendrerit viverra. Phasellus sit amet nunc mauris, eu ultricies tellus. Sed a mi tortor, eleifend varius erat. Proin consectetur molestie tortor eu gravida. Cras placerat orci id arcu tristique ut rutrum justo pulvinar. Maecenas lacinia fringilla diam non bibendum. Aenean vel viverra turpis. Integer ut leo nisi. Pellentesque vehicula quam ut sapien convallis consequat. Aliquam ut arcu purus, eget tempor purus. Integer eu tellus quis erat tristique gravida eu vel lorem.&lt;/p&gt;</content><author><name>Reid Cheng</name></author><category term="Photo" /><category term="consectetur" /><summary type="html">Nunc dignissim volutpat enim, non sollicitudin purus dignissim id. Nam sit amet urna eu velit lacinia eleifend. Proin auctor rhoncus ligula nec aliquet. Donec sodales molestie lacinia. Curabitur dictum faucibus urna at convallis. Aliquam in lectus at urna rutrum porta. In lacus arcu, molestie ut vestibulum ut, rhoncus sed eros. Sed et elit vitae risus pretium consectetur vel in mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempus turpis quis lectus rhoncus adipiscing. Proin pulvinar placerat suscipit. Maecenas imperdiet, quam vitae varius auctor, enim mauris vulputate sapien, nec laoreet neque diam non quam.</summary></entry><entry><title type="html">MathJax with Jekyll</title><link href="http://localhost:4000/opinion/2014/02/16/Mathjax-with-jekyll/" rel="alternate" type="text/html" title="MathJax with Jekyll" /><published>2014-02-16T00:00:00+08:00</published><updated>2014-02-16T00:00:00+08:00</updated><id>http://localhost:4000/opinion/2014/02/16/Mathjax-with-jekyll</id><content type="html" xml:base="http://localhost:4000/opinion/2014/02/16/Mathjax-with-jekyll/">&lt;p&gt;One of the rewards of switching my website to &lt;a href=&quot;http://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; is the
+ability to support &lt;strong&gt;MathJax&lt;/strong&gt;, which means I can write LaTeX-like equations that get
+nicely displayed in a web browser, like this one \( \sqrt{\frac{n!}{k!(n-k)!}} \) or
+this one \( x^2 + y^2 = r^2 \).&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;img class=&quot;centered&quot; src=&quot;https://www.mathjax.org/badge/mj-logo.svg&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;whats-mathjax&quot;&gt;What’s MathJax?&lt;/h3&gt;
+
+&lt;p&gt;If you check MathJax website &lt;a href=&quot;http://www.mathjax.org/&quot;&gt;(www.mathjax.org)&lt;/a&gt; you’ll see
+that it &lt;em&gt;is an open source JavaScript display engine for mathematics that works in all
+browsers&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-implement-mathjax-with-jekyll&quot;&gt;How to implement MathJax with Jekyll&lt;/h3&gt;
+
+&lt;p&gt;I followed the instructions described by Dason Kurkiewicz for
+&lt;a href=&quot;http://dasonk.github.io/blog/2012/10/09/Using-Jekyll-and-Mathjax/&quot;&gt;using Jekyll and Mathjax&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here are some important details. I had to modify the Ruby library for Markdown in
+my &lt;code class=&quot;highlighter-rouge&quot;&gt;_config.yml&lt;/code&gt; file. Now I’m using redcarpet so the corresponding line in the
+configuration file is: &lt;code class=&quot;highlighter-rouge&quot;&gt;markdown: redcarpet&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;To load the MathJax javascript, I added the following lines in my layout &lt;code class=&quot;highlighter-rouge&quot;&gt;post.html&lt;/code&gt;
+(located in my folder &lt;code class=&quot;highlighter-rouge&quot;&gt;_layouts&lt;/code&gt;)&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Of course you can choose a different file location in your jekyll layouts.&lt;/p&gt;
+
+&lt;p&gt;Note that by default, the &lt;strong&gt;tex2jax&lt;/strong&gt; preprocessor defines the
+LaTeX math delimiters, which are &lt;code class=&quot;highlighter-rouge&quot;&gt;\\(...\\)&lt;/code&gt; for in-line math, and &lt;code class=&quot;highlighter-rouge&quot;&gt;\\[...\\]&lt;/code&gt; for
+displayed equations. It also defines the TeX delimiters &lt;code class=&quot;highlighter-rouge&quot;&gt;$$...$$&lt;/code&gt; for displayed
+equations, but it does not define &lt;code class=&quot;highlighter-rouge&quot;&gt;$...$&lt;/code&gt; as in-line math delimiters. To enable in-line math delimiter with &lt;code class=&quot;highlighter-rouge&quot;&gt;$...$&lt;/code&gt;, please use the following configuration:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/x-mathjax-config&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MathJax.Hub.Config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tex2jax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inlineMath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'$'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'$'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\\('&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'\\)'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;processEscapes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;a-couple-of-examples&quot;&gt;A Couple of Examples&lt;/h3&gt;
+
+&lt;p&gt;Here’s a short list of examples. To know more about the details behind MathJax, you can
+always checked the provided documentation available at
+&lt;a href=&quot;http://docs.mathjax.org/en/latest/&quot;&gt;http://docs.mathjax.org/en/latest/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s try a first example. Here’s a dummy equation:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a^2 + b^2 = c^2&lt;/script&gt;
+
+&lt;p&gt;How do you write such expression? Very simple: using &lt;strong&gt;double dollar&lt;/strong&gt; signs&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;To display inline math use &lt;code class=&quot;highlighter-rouge&quot;&gt;\\( ... \\)&lt;/code&gt; like this &lt;code class=&quot;highlighter-rouge&quot;&gt;\\( sin(x^2) \\)&lt;/code&gt; which gets
+rendered as \( sin(x^2) \)&lt;/p&gt;
+
+&lt;p&gt;Here’s another example using type &lt;code class=&quot;highlighter-rouge&quot;&gt;\mathsf&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathsf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PCs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;times&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathsf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Loadings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;which gets displayed as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mathsf{Data = PCs} \times \mathsf{Loadings}&lt;/script&gt;
+
+&lt;p&gt;Or even better:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;err&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathsf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;is displayed as&lt;/p&gt;
+
+&lt;p&gt;\[ \mathbf{X} = \mathbf{Z} \mathbf{P^\mathsf{T}} \]&lt;/p&gt;
+
+&lt;p&gt;If you want to use subscripts like this \( \mathbf{X}_{n,p} \) you need to scape the
+underscores with a backslash like so &lt;code class=&quot;highlighter-rouge&quot;&gt;\mathbf{X}\_{n,p}&lt;/code&gt;:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mathbf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$$&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;will be displayed as&lt;/p&gt;
+
+&lt;p&gt;\[ \mathbf{X}_{n,p} = \mathbf{A}_{n,k} \mathbf{B}_{k,p} \]&lt;/p&gt;</content><author><name>Reid Cheng</name></author><category term="resources" /><category term="jekyll" /><summary type="html">One of the rewards of switching my website to Jekyll is the ability to support MathJax, which means I can write LaTeX-like equations that get nicely displayed in a web browser, like this one \( \sqrt{\frac{n!}{k!(n-k)!}} \) or this one \( x^2 + y^2 = r^2 \).</summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://gastonsanchez.com/images/blog/mathjax_logo.png" /></entry><entry><title type="html">Images</title><link href="http://localhost:4000/2013/12/27/images/" rel="alternate" type="text/html" title="Images" /><published>2013-12-27T06:46:49+08:00</published><updated>2013-12-27T06:46:49+08:00</updated><id>http://localhost:4000/2013/12/27/images</id><content type="html" xml:base="http://localhost:4000/2013/12/27/images/">&lt;p&gt;This is a image test post.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww1.sinaimg.cn/mw690/81b78497jw1emfgwkasznj21hc0u0qb7.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww3.sinaimg.cn/mw690/81b78497jw1emfgwjrh2pj21hc0u01g3.jpg&quot; alt=&quot;Caption&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://ww2.sinaimg.cn/mw690/81b78497jw1emfgwil5xkj21hc0u0tpm.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://placehold.it/350x150.jpg&quot; alt=&quot;Small Picture&quot; /&gt;&lt;/p&gt;</content><author><name>Reid Cheng</name></author><summary type="html">This is a image test post.</summary></entry><entry><title type="html">Excerpts</title><link href="http://localhost:4000/2013/12/25/excerpts/" rel="alternate" type="text/html" title="Excerpts" /><published>2013-12-25T08:23:23+08:00</published><updated>2013-12-25T08:23:23+08:00</updated><id>http://localhost:4000/2013/12/25/excerpts</id><content type="html" xml:base="http://localhost:4000/2013/12/25/excerpts/">&lt;p&gt;The following contents should be invisible in home/archive page.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eget urna vitae velit eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Aliquam eleifend dolor vitae libero pharetra adipiscing. Etiam adipiscing dolor a quam tempor, eu convallis nulla varius. Aliquam sollicitudin risus a porta aliquam. Ut nec velit dolor. Proin eget leo lobortis, aliquam est sed, mollis mauris. Fusce vitae leo pretium massa accumsan condimentum. Fusce malesuada gravida lectus vel vulputate. Donec bibendum porta nibh ut aliquam.&lt;/p&gt;
+
+&lt;p&gt;Sed lorem felis, congue non fringilla eu, aliquam eu eros. Curabitur orci libero, mollis sed semper vitae, adipiscing in lectus. Aenean non egestas odio. Donec sollicitudin nisi quis lorem gravida, in pharetra mauris fringilla. Duis sit amet faucibus dolor, id aliquam neque. In egestas, odio gravida tempor dictum, mauris felis faucibus purus, sit amet commodo lacus diam vitae est. Ut ut quam eget massa semper sodales. Aenean non ipsum cursus, blandit lectus in, ornare odio. Curabitur ultrices porttitor vulputate.&lt;/p&gt;</content><author><name>Reid Cheng</name></author><summary type="html">The following contents should be invisible in home/archive page.</summary></entry></feed>
