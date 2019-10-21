@@ -1,4 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-19T22:20:51+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Gent79</title><subtitle>My Blog on Github</subtitle><author><name>Reid Cheng</name></author><entry><title type="html">Running Cisco Trex</title><link href="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/" rel="alternate" type="text/html" title="Running Cisco Trex" /><published>2019-10-18T00:00:00+08:00</published><updated>2019-10-18T00:00:00+08:00</updated><id>http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex</id><content type="html" xml:base="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/">&lt;p&gt;&lt;strong&gt;Side Note&lt;/strong&gt; This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn’t have very fancy GUI client like Spirent, but its GUI client is getting improved a lot.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/atom.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-10-21T10:10:06+08:00</updated><id>http://localhost:4000/atom.xml</id><title type="html">Gent79</title><subtitle>My Blog on Github</subtitle><author><name>Reid Cheng</name></author><entry><title type="html">Upgrade Cisco vManage</title><link href="http://localhost:4000/sd-wan/2019/10/21/Upgrade_vManage/" rel="alternate" type="text/html" title="Upgrade Cisco vManage" /><published>2019-10-21T00:00:00+08:00</published><updated>2019-10-21T00:00:00+08:00</updated><id>http://localhost:4000/sd-wan/2019/10/21/Upgrade_vManage</id><content type="html" xml:base="http://localhost:4000/sd-wan/2019/10/21/Upgrade_vManage/">&lt;p&gt;The post will walk you through the steps for upgrading vManage.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. Download vManage upgrade image from Cisco&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/44A898C9-580E-4F6B-8193-8B4F3E716DB1.png&quot; alt=&quot;44A898C9-580E-4F6B-8193-8B4F3E716DB1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The compressed file contains the new kernel, certificate, etc.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  vmanage-19.2.097-x86_64 &lt;span class=&quot;nb&quot;&gt;ls
+&lt;/span&gt;bootx64.efi       crash.kernel      md5sum            rootfsimg.sig     sigs.vip
+cisco_crl.pem     image-signing.crt rootfs.img        sigs              vmlinuz
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;2. Navigate to Maintenance -&amp;gt; Software Repository&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Add the downloaded vmanage upgrade image here.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/2AFC4565-2CBD-4DE8-8F7E-9274C5757852.png&quot; alt=&quot;2AFC4565-2CBD-4DE8-8F7E-9274C5757852&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After done, you should be able to see the result like below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/FE9EA772-E83C-402E-9E4D-FA1BCA186260.png&quot; alt=&quot;FE9EA772-E83C-402E-9E4D-FA1BCA186260&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. Go to Maintenance -&amp;gt; Software upgrade -&amp;gt; vManage&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Click &lt;strong&gt;Upgrade&lt;/strong&gt; button.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/DD05DD83-C605-4C4C-A1F0-CA9570B0C8F6.png&quot; alt=&quot;DD05DD83-C605-4C4C-A1F0-CA9570B0C8F6&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then select your desired version.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/DD7B3A73-F0B8-4B8C-AB82-927373A595F0.png&quot; alt=&quot;DD7B3A73-F0B8-4B8C-AB82-927373A595F0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Waiting for the system to install the upgrade.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/0FDFB609-739F-4D4F-836C-CEE9861163DA.png&quot; alt=&quot;0FDFB609-739F-4D4F-836C-CEE9861163DA&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. Activate the newly installed upgrade version&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/95BE8602-FE90-4A17-839A-B6F061CEB66F.png&quot; alt=&quot;95BE8602-FE90-4A17-839A-B6F061CEB66F&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This step will require a reboot, so backup your configuration and data, in case of anything goes wrong while upgrading.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/08C53C79-6219-47B5-9E06-FBC8EA100232-1623380.png&quot; alt=&quot;08C53C79-6219-47B5-9E06-FBC8EA100232&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The last step is to set the default version.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/B3EF6986-D775-4AAF-A68C-51F7169592DB.png&quot; alt=&quot;B3EF6986-D775-4AAF-A68C-51F7169592DB&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/2019-10-21-Upgrade_vManage/08C53C79-6219-47B5-9E06-FBC8EA100232.png&quot; alt=&quot;08C53C79-6219-47B5-9E06-FBC8EA100232&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Done!&lt;/strong&gt;&lt;/p&gt;</content><author><name>Reid Cheng</name></author><category term="Cisco" /><category term="Viptela" /><summary type="html">The post will walk you through the steps for upgrading vManage.</summary></entry><entry><title type="html">Running Cisco Trex</title><link href="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/" rel="alternate" type="text/html" title="Running Cisco Trex" /><published>2019-10-18T00:00:00+08:00</published><updated>2019-10-18T00:00:00+08:00</updated><id>http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex</id><content type="html" xml:base="http://localhost:4000/tools/2019/10/18/Run_Cisco_Trex/">&lt;p&gt;&lt;strong&gt;Side Note&lt;/strong&gt; This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn’t have very fancy GUI client like Spirent, but its GUI client is getting improved a lot.&lt;/p&gt;
 
 &lt;h1 id=&quot;install-cisco-trex&quot;&gt;Install Cisco Trex&lt;/h1&gt;
 
