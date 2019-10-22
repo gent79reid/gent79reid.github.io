@@ -6,7 +6,7 @@ layout: post
 title: "Onboarding Cisco cEdge Router"
 description: "This post will cover the steps of onboarding Cisco CSR1kV as cEdge router in my lab."
 categories: [SD-WAN]
-tags: [Cisco,Viptela]
+tags: [Cisco, Viptela, Installation]
 comments: true
 
 ---

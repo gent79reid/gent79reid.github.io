@@ -4,7 +4,7 @@ layout: post
 title: "Running Cisco Trex"
 description: "This post will cover some basic usages of Cisco Trex, show you how to simply launch Trex to validate your DUT in home lab."
 categories: [Tools]
-tags: [Cisco,Trafffic Generator]
+tags: [Cisco,Trafffic Generator,Installation]
 comments: true
 redirect_from:
   - /2019/10/18/

@@ -3,7 +3,7 @@ layout: post
 title: "Install Certificate on Viptela vManage"
 description: ""
 categories: [SD-WAN]
-tags: [Cisco,Viptela,CA]
+tags: [Cisco,Viptela,CA,Installation]
 comments: true
 redirect_from:
   - /2019/10/08/

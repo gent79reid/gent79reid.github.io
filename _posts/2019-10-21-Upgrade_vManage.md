@@ -4,7 +4,7 @@ layout: post
 title: "Upgrade Cisco vManage"
 description: "This post will cover the steps of upgrading vManage from 19.1 to 19.2"
 categories: [SD-WAN]
-tags: [Cisco,Viptela]
+tags: [Cisco,Viptela,Installation]
 comments: true
 ---
 
