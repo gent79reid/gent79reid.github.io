@@ -119,7 +119,7 @@ Next, check that cedge router is in "In Sync" status, and it's time to let vMana
 
 Done!
 
-![image-20191022204434426](assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204434426.png)
+![image-20191022204434426](/assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204434426.png)
 
 Next post, I will cover the steps to configuring and operating SD-AVC in Viptela solution.
 
