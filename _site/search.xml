@@ -16,18 +16,28 @@
         
           <tag> Viptela </tag>
         
+          <tag> Installation </tag>
+        
       </tags>
       <tags></tags>
     </entry>
   
     <entry>
-      <title><![CDATA[Onboarding cisco cedge router]]></title>
-      <url>/2019/10/21/Onboarding-Cisco-cEdge-Router/</url>
-      <content type="text"><![CDATA[layout: posttitle: “Onboarding Cisco cEdge Router”description: “This post will cover the steps of onboarding Cisco CSR1kV as cEdge router in my lab.”categories: [SD-WAN]tags: [Cisco,Viptela]comments: trueSide Note This lab is to demonstrate the steps of bringing up Cisco CSR1kV without PnP service in lab environment. In real world, it is strongly recommended to leverage Cisco PnP service using auto bootstrap, either by copy bootstrap file to Physical cEdge compatible routers or use cloud-init for Virtual instance.cEdge will automatically initiate PnP server, so I need to disable it right after it boot up completely.BR-2-cEdge#pnpa service discovery stopI strongly recommend you to load up following initial configuration in a bulk input, I ran into some weird issues when I typed each configuration sections, especially Tunnel interface.config-transactionsystem system-ip             192.168.1.5 domain-id             1 site-id               200 admin-tech-on-failure organization-name     gent79.me vbond vbond.gent79.me!ip host vbond.gent79.me 99.0.99.11interface GigabitEthernet1 no shutdown ip address 99.0.99.25 255.255.255.0exitinterface GigabitEthernet2 no shutdown ip address 10.0.10.25 255.255.255.0interface Tunnel1 no shutdown ip unnumbered GigabitEthernet1 tunnel source GigabitEthernet1 tunnel mode sdwanexitinterface Tunnel2 no shutdown ip unnumbered GigabitEthernet2 tunnel source GigabitEthernet2 tunnel mode sdwanexitsdwan interface GigabitEthernet1  tunnel-interface   encapsulation ipsec   color public-internet   no allow-service bgp   allow-service dhcp   allow-service dns   allow-service icmp   no allow-service sshd   no allow-service netconf   no allow-service ntp   no allow-service ospf   no allow-service stun   no allow-service snmp  exit exit interface GigabitEthernet2  tunnel-interface   encapsulation ipsec   color mpls restrict   max-control-connections 0   no allow-service bgp   allow-service dhcp   allow-service dns   allow-service icmp   no allow-service sshd   no allow-service netconf   no allow-service ntp   no allow-service ospf   no allow-service stun   no allow-service snmp  exit          Copy Root CA certificate to cEdge bootflash and install it:BR-1-cEdge#copy scp://root@192.168.31.79//root/sdwan-lab/Gent79_Root_CA.pem bootflash:/root_ca.crtBR-1-cEdge#request platform software sdwan root-cert-chain install bootflash:/root_ca.crtUploading root-ca-cert-chain via VPN 0Copying ... /bootflash//root_ca.crt via VPN 0Updating the root certificate chain..Successfully installed the root certificate chainAssuming that you have uploaded the WAN edge list from Cisco PnP portal to vManage. Pick up one available from the list, the Token is used as temporary code while activating cedge in next step.**After uploading WAN Edge list to vManage, don’t forget to click the button to push them to vSmart controller. **BR-1-cEdge#request platform software sdwan vedge_cloud activate chassis-number CSR-81AFE172-61C8-8CEC-0978-xxxxx token xxxxxxxxxxBR1-cEdge-01#show sdwan certificate serial Chassis number: CSR-81AFE172-61C8-8CEC-0978-A313E45EA070 serial number: xxxxxNext, check that cedge router is in “In Sync” status, and it’s time to let vManage take over the control from CLI mode. Before that the relevant templates should be in place.Done!Next post, I will cover the steps to configuring and operating SD-AVC in Viptela solution.]]></content>
+      <title><![CDATA[Onboarding Cisco cEdge Router]]></title>
+      <url>/sd-wan/2019/10/21/Onboarding-Cisco-cEdge-Router/</url>
+      <content type="text"><![CDATA[Side Note This lab is to demonstrate the steps of bringing up Cisco CSR1kV without PnP service in lab environment. In real world, it is strongly recommended to leverage Cisco PnP service using auto bootstrap, either by copy bootstrap file to Physical cEdge compatible routers or use cloud-init for Virtual instance.cEdge will automatically initiate PnP server, so I need to disable it right after it boot up completely.BR-2-cEdge#pnpa service discovery stopI strongly recommend you to load up following initial configuration in a bulk input, I ran into some weird issues when I typed each configuration sections, especially Tunnel interface.config-transactionsystem system-ip             192.168.1.5 domain-id             1 site-id               200 admin-tech-on-failure organization-name     gent79.me vbond vbond.gent79.me!ip host vbond.gent79.me 99.0.99.11interface GigabitEthernet1 no shutdown ip address 99.0.99.25 255.255.255.0exitinterface GigabitEthernet2 no shutdown ip address 10.0.10.25 255.255.255.0interface Tunnel1 no shutdown ip unnumbered GigabitEthernet1 tunnel source GigabitEthernet1 tunnel mode sdwanexitinterface Tunnel2 no shutdown ip unnumbered GigabitEthernet2 tunnel source GigabitEthernet2 tunnel mode sdwanexitsdwan interface GigabitEthernet1  tunnel-interface   encapsulation ipsec   color public-internet   no allow-service bgp   allow-service dhcp   allow-service dns   allow-service icmp   no allow-service sshd   no allow-service netconf   no allow-service ntp   no allow-service ospf   no allow-service stun   no allow-service snmp  exit exit interface GigabitEthernet2  tunnel-interface   encapsulation ipsec   color mpls restrict   max-control-connections 0   no allow-service bgp   allow-service dhcp   allow-service dns   allow-service icmp   no allow-service sshd   no allow-service netconf   no allow-service ntp   no allow-service ospf   no allow-service stun   no allow-service snmp  exit          Copy Root CA certificate to cEdge bootflash and install it:BR-1-cEdge#copy scp://root@192.168.31.79//root/sdwan-lab/Gent79_Root_CA.pem bootflash:/root_ca.crtBR-1-cEdge#request platform software sdwan root-cert-chain install bootflash:/root_ca.crtUploading root-ca-cert-chain via VPN 0Copying ... /bootflash//root_ca.crt via VPN 0Updating the root certificate chain..Successfully installed the root certificate chainAssuming that you have uploaded the WAN edge list from Cisco PnP portal to vManage. Pick up one available from the list, the Token is used as temporary code while activating cedge in next step.**After uploading WAN Edge list to vManage, don’t forget to click the button to push them to vSmart controller. **BR-1-cEdge#request platform software sdwan vedge_cloud activate chassis-number CSR-81AFE172-61C8-8CEC-0978-xxxxx token xxxxxxxxxxBR1-cEdge-01#show sdwan certificate serial Chassis number: CSR-81AFE172-61C8-8CEC-0978-A313E45EA070 serial number: xxxxxNext, check that cedge router is in “In Sync” status, and it’s time to let vManage take over the control from CLI mode. Before that the relevant templates should be in place.Done!Next post, I will cover the steps to configuring and operating SD-AVC in Viptela solution.]]></content>
       <categories>
+        
+          <category> SD-WAN </category>
         
       </categories>
       <tags>
+        
+          <tag> Cisco </tag>
+        
+          <tag> Viptela </tag>
+        
+          <tag> Installation </tag>
         
       </tags>
       <tags></tags>
@@ -47,6 +57,8 @@
           <tag> Cisco </tag>
         
           <tag> Trafffic Generator </tag>
+        
+          <tag> Installation </tag>
         
       </tags>
       <tags></tags>
@@ -89,6 +101,8 @@
           <tag> Viptela </tag>
         
           <tag> CA </tag>
+        
+          <tag> Installation </tag>
         
       </tags>
       <tags></tags>

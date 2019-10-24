@@ -14,13 +14,20 @@
 
 
 
-<html class="theme-next mist use-motion" lang="en">
+<html class="theme-next pisces use-motion" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
+
+  
+  
+    
+    
+  <script src="/assets/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/assets/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
 
 
 
@@ -83,7 +90,7 @@
 <link href="/assets/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="" />
+  <meta name="keywords" content="Cisco,Viptela,Installation," />
 
 
 
@@ -111,21 +118,21 @@
 
 
 
-<meta name="description" content="">
-<meta name="keywords" content="CyberSecurity,IoT,SD-WAN,Cisco,SOC,SIEM">
+<meta name="description" content="This post will cover the steps of onboarding Cisco CSR1kV as cEdge router in my lab.">
+<meta name="keywords" content="Cisco, Viptela, Installation">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Onboarding cisco cedge router">
-<meta property="og:url" content="http://localhost:4000/2019/10/21/Onboarding-Cisco-cEdge-Router/">
+<meta property="og:title" content="Onboarding Cisco cEdge Router">
+<meta property="og:url" content="http://localhost:4000/sd-wan/2019/10/21/Onboarding-Cisco-cEdge-Router/">
 <meta property="og:site_name" content="Gent79">
-<meta property="og:description" content="">
+<meta property="og:description" content="This post will cover the steps of onboarding Cisco CSR1kV as cEdge router in my lab.">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="/assets/images/2019-10-21-Onboarding Cisco cEdge Router/D678DB91-F5F5-4D46-A6A1-6C1A93B851FA.png">
 <meta property="og:image" content="/assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204050180.png">
 <meta property="og:image" content="/assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204112427.png">
-<meta property="og:image" content="assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204434426.png">
+<meta property="og:image" content="/assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204434426.png">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Onboarding cisco cedge router">
-<meta name="twitter:description" content="">
+<meta name="twitter:title" content="Onboarding Cisco cEdge Router">
+<meta name="twitter:description" content="This post will cover the steps of onboarding Cisco CSR1kV as cEdge router in my lab.">
 <meta name="twitter:image" content="/assets/images/2019-10-21-Onboarding Cisco cEdge Router/D678DB91-F5F5-4D46-A6A1-6C1A93B851FA.png">
 
 
@@ -133,7 +140,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -159,7 +166,7 @@
 
 
 
-  <title>Onboarding cisco cedge router | Gent79</title>
+  <title>Onboarding Cisco cEdge Router | Gent79</title>
   
 
 
@@ -276,6 +283,18 @@
           </a>
         </li>
       
+        
+        
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
+          </a>
+        </li>
+      
 
       
         <li class="menu-item menu-item-search">
@@ -340,7 +359,7 @@
   
 
   <article class="post post-type- " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://localhost:4000/2019/10/21/Onboarding-Cisco-cEdge-Router/">
+    <link itemprop="mainEntityOfPage" href="http://localhost:4000/sd-wan/2019/10/21/Onboarding-Cisco-cEdge-Router/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reid Cheng">
@@ -360,7 +379,7 @@
           <h1 class="post-title" itemprop="name headline">
           
           
-            Onboarding cisco cedge router
+            Onboarding Cisco cEdge Router
           
         </h1>
         
@@ -385,6 +404,29 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/category/#/SD-WAN" itemprop="url" rel="index">
+                    <span itemprop="name">SD-WAN</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -393,9 +435,9 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/10/21/Onboarding-Cisco-cEdge-Router/#comments" itemprop="discussionUrl">
+                <a href="/sd-wan/2019/10/21/Onboarding-Cisco-cEdge-Router/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="/2019/10/21/Onboarding-Cisco-cEdge-Router/" itemprop="commentCount"></span>
+                        data-disqus-identifier="/sd-wan/2019/10/21/Onboarding-Cisco-cEdge-Router/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -403,7 +445,7 @@
 
           
           
-             <span id="/2019/10/21/Onboarding-Cisco-cEdge-Router/" class="leancloud_visitors" data-flag-title="Onboarding cisco cedge router">
+             <span id="/sd-wan/2019/10/21/Onboarding-Cisco-cEdge-Router/" class="leancloud_visitors" data-flag-title="Onboarding Cisco cEdge Router">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -422,7 +464,7 @@
           
             
                 <div class="post-description">
-                    
+                    This post will cover the steps of onboarding Cisco CSR1kV as cEdge router in my lab.
                 </div>
             
           
@@ -452,19 +494,7 @@
 
 
 
-  
-<hr />
-
-<p>layout: post
-title: “Onboarding Cisco cEdge Router”
-description: “This post will cover the steps of onboarding Cisco CSR1kV as cEdge router in my lab.”
-categories: [SD-WAN]
-tags: [Cisco,Viptela]
-comments: true</p>
-
-<hr />
-
-<p><strong>Side Note</strong> This lab is to demonstrate the steps of bringing up Cisco CSR1kV without PnP service in lab environment. In real world, it is strongly recommended to leverage Cisco PnP service using auto bootstrap, either by copy bootstrap file to Physical cEdge compatible routers or use cloud-init for Virtual instance.</p>
+  <p><strong>Side Note</strong> This lab is to demonstrate the steps of bringing up Cisco CSR1kV without PnP service in lab environment. In real world, it is strongly recommended to leverage Cisco PnP service using auto bootstrap, either by copy bootstrap file to Physical cEdge compatible routers or use cloud-init for Virtual instance.</p>
 
 <p>cEdge will automatically initiate PnP server, so I need to disable it right after it boot up completely.</p>
 
@@ -572,7 +602,7 @@ Chassis number: CSR-81AFE172-61C8-8CEC-0978-A313E45EA070 serial number: xxxxx
 
 <p>Done!</p>
 
-<p><img src="assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204434426.png" alt="image-20191022204434426" /></p>
+<p><img src="/assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204434426.png" alt="image-20191022204434426" /></p>
 
 <p>Next post, I will cover the steps to configuring and operating SD-AVC in Viptela solution.</p>
 
@@ -603,6 +633,19 @@ Chassis number: CSR-81AFE172-61C8-8CEC-0978-A313E45EA070 serial number: xxxxx
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            
+            <a href="/tag/#/Cisco" rel="tag"># Cisco</a>
+          
+            
+            <a href="/tag/#/Viptela" rel="tag"># Viptela</a>
+          
+            
+            <a href="/tag/#/Installation" rel="tag"># Installation</a>
+          
+        </div>
       
 
       
@@ -729,7 +772,7 @@ Chassis number: CSR-81AFE172-61C8-8CEC-0978-A313E45EA070 serial number: xxxxx
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -795,7 +838,7 @@ Chassis number: CSR-81AFE172-61C8-8CEC-0978-A313E45EA070 serial number: xxxxx
 <div class="theme-info">
   Theme -
   <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -900,6 +943,13 @@ Chassis number: CSR-81AFE172-61C8-8CEC-0978-A313E45EA070 serial number: xxxxx
   
   
 
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
   <script type="text/javascript" src="/assets/js/src/scrollspy.js?v=5.1.1"></script>
 <script type="text/javascript" src="/assets/js/src/post-details.js?v=5.1.1"></script>
 
@@ -924,9 +974,9 @@ Chassis number: CSR-81AFE172-61C8-8CEC-0978-A313E45EA070 serial number: xxxxx
       
       <script type="text/javascript">
           var disqus_config = function () {
-              this.page.url = 'http://localhost:4000/2019/10/21/Onboarding-Cisco-cEdge-Router/';
-              this.page.identifier = '/2019/10/21/Onboarding-Cisco-cEdge-Router/';
-              this.page.title = 'Onboarding cisco cedge router';
+              this.page.url = 'http://localhost:4000/sd-wan/2019/10/21/Onboarding-Cisco-cEdge-Router/';
+              this.page.identifier = '/sd-wan/2019/10/21/Onboarding-Cisco-cEdge-Router/';
+              this.page.title = 'Onboarding Cisco cEdge Router';
           };
           var d = document, s = d.createElement('script');
           s.src = 'https://gent79reid.disqus.com/embed.js';

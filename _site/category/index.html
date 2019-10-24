@@ -14,13 +14,20 @@
 
 
 
-<html class="theme-next mist use-motion" lang="en">
+<html class="theme-next pisces use-motion" lang="en">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
 
+
+  
+  
+    
+    
+  <script src="/assets/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/assets/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
 
 
 
@@ -128,7 +135,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -268,6 +275,18 @@
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             Tags
+          </a>
+        </li>
+      
+        
+        
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            Sitemap
           </a>
         </li>
       
@@ -469,6 +488,34 @@
 
       <h2 class="post-title">
         
+            <a class="post-title-link" href="/sd-wan/2019/10/21/Onboarding-Cisco-cEdge-Router/" itemprop="url">
+              
+                <span itemprop="name">Onboarding Cisco cEdge Router</span>
+              
+            </a>
+        
+      </h2>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2019-10-21T00:00:00+08:00"
+              content="2019-10-21" >
+          10-21
+        </time>
+      </div>
+
+    </header>
+  </article>
+
+    
+      
+
+      
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article" route="/SD-WAN">
+    <header class="post-header">
+
+      <h2 class="post-title">
+        
             <a class="post-title-link" href="/sd-wan/2019/10/08/fix-certificate-vbond/" itemprop="url">
               
                 <span itemprop="name">Fix Root-ca-chain issue on Viptela vBond</span>
@@ -618,7 +665,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -684,7 +731,7 @@
 <div class="theme-info">
   Theme -
   <a class="theme-link" href="https://github.com/simpleyyt/jekyll-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -789,6 +836,13 @@
   
   
 
+
+  <script type="text/javascript" src="/assets/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/assets/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
   
     
 
@@ -823,7 +877,7 @@
         
         
 
-        var maps = { 'RS': 2, 'Linux': 1, 'SD-WAN': 3, 'Tools': 1, };
+        var maps = { 'RS': 2, 'Linux': 1, 'SD-WAN': 4, 'Tools': 1, };
         var dirs = hash.split("/");
         var collection = decodeURIComponent(dirs[1]);
         dirs.splice(0, 2);

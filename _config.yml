@@ -12,7 +12,7 @@ author: Reid Cheng
 language: en
 date_format: '%Y-%m-%d'
 
-# URL
+# sy
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com' and baseurl as '/child'
 url: http://gent79.me
 baseurl:
@@ -612,7 +612,7 @@ use_motion: true
 fancybox: true
 
 # Progress bar in the top during page loading.
-pace: false
+pace: true
 # Themes list:
 #pace-theme-big-counter
 #pace-theme-bounce
@@ -631,7 +631,7 @@ pace: false
 # pace_theme: pace-theme-center-simple
 pace_theme: pace-theme-minimal
 
-# Canvas-nest
+# Canvas-nests
 canvas_nest: false
 
 # three_waves
