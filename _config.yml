@@ -8,7 +8,7 @@
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 #--------------------------
 
-title: Chirpy                          # the main title
+title: Gent79                          # the main title
 
 tagline: A text-focused Jekyll theme.  # it will display as the sub-title
 
@@ -20,7 +20,7 @@ url: 'https://gent79reid.github.io'
 
 author: Gent79                  # change to your full name
 
-avatar: /assets/img/sample/avatar.jpg   # support internet resources
+avatar: /assets/img/reid.jpg   # support internet resources
 
 github:
   username: gent79reid             # change to your github username
@@ -65,7 +65,7 @@ disqus:
   shortname: ''    # Fill with your Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
 
 # The year your website first ran.
-first_run: 2019
+first_run: 2011
 
 # boolean type, global switch for ToC in posts.
 toc: true
