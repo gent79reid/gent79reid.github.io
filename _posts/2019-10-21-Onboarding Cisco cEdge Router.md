@@ -102,7 +102,7 @@ Assuming that you have uploaded the WAN edge list from Cisco PnP portal to vMana
 
 **After uploading WAN Edge list to vManage, don't forget to click the button to push them to vSmart controller. **
 
-![D678DB91-F5F5-4D46-A6A1-6C1A93B851FA](/assets/images/2019-10-21-Onboarding Cisco cEdge Router/D678DB91-F5F5-4D46-A6A1-6C1A93B851FA.png)
+![D678DB91-F5F5-4D46-A6A1-6C1A93B851FA](/assets/img/2019-10-21-Onboarding Cisco cEdge Router/D678DB91-F5F5-4D46-A6A1-6C1A93B851FA.png)
 
 ```bash
 BR-1-cEdge#request platform software sdwan vedge_cloud activate chassis-number CSR-81AFE172-61C8-8CEC-0978-xxxxx token xxxxxxxxxx
@@ -113,13 +113,13 @@ Chassis number: CSR-81AFE172-61C8-8CEC-0978-A313E45EA070 serial number: xxxxx
 
 Next, check that cedge router is in "In Sync" status, and it's time to let vManage take over the control from CLI mode. Before that the relevant templates should be in place. 
 
-![image-20191022204050180](/assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204050180.png)
+![image-20191022204050180](/assets/img/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204050180.png)
 
-![image-20191022204112427](/assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204112427.png)
+![image-20191022204112427](/assets/img/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204112427.png)
 
 Done!
 
-![image-20191022204434426](/assets/images/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204434426.png)
+![image-20191022204434426](/assets/img/2019-10-21-Onboarding Cisco cEdge Router/image-20191022204434426.png)
 
 Next post, I will cover the steps to configuring and operating SD-AVC in Viptela solution.
 
