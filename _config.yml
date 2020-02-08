@@ -30,3 +30,4 @@ plugins:
 # Custom variables
 owner : "Gent79"
 year : "2011"
+google_analytics: [UA-138431802-1]
