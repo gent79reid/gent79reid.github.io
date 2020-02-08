@@ -1,11 +1,8 @@
 ---
-layout: post
 title: "OSPF DN-BIT"
-description: "Test IOS OSPF DN-BIT"
+date: 2011-12-25 14:10:00 +0800
 categories: [RS]
 tags: [Cisco,IOS,IOS-XR]
-redirect_from:
-  - /2011/10/25/
 ---
 
 

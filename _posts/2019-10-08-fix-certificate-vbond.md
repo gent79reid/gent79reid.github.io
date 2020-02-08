@@ -1,12 +1,9 @@
 ---
-layout: post
 title: "Fix Root-ca-chain issue on Viptela vBond"
-description: ""
+date: 2019-10-08 14:10:00 +0800
 categories: [SD-WAN]
 tags: [Cisco,Viptela,CA]
 comments: true
-redirect_from:
-    - /2019/10/08/
 ---
 
 Failed to install certificate for vBond and vSmart!
