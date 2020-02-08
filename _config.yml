@@ -84,7 +84,7 @@ keywords: "CyberSecurity,IoT,SD-WAN,Cisco,SOC,SIEM"
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
 # Set rss to specific value if you have burned your feed already.
-rss:
+#rss:
 
 # Specify the date when the site was setup
 since: 2011
@@ -215,7 +215,7 @@ font:
 # Value is the target link (E.g. GitHub: https://github.com/iissnan)
 social:
   GitHub: https://github.com/gent79reid
-  Twitter: https://twitter/Gent791
+  #Twitter: https://twitter/Gent791
   mail: chengreid@gmail.com
 
 # Social Links Icons
@@ -228,8 +228,8 @@ social_icons:
   # Icon Mappings.
   # KeyMapsToSocialItemKey: NameOfTheIconFromFontAwesome
   GitHub: github
-  Twitter: twitter
-  mail: chengreid@gmail.com
+  #Twitter: twitter
+  mail: gmail
  
 
 
