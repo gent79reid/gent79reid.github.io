@@ -1,8 +1,8 @@
 ---
 title: Running Cisco Trex
 date: 2019-10-18 14:10:00 +0800
-categories: [Tools]
-tags: [Cisco,Trafffic Generator,Installation]
+categories: [Tools,Trafffic Generator]
+tags: [Tools]
 ---
 
 **Side Note** This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn't have very fancy GUI client like Spirent, but its GUI client is getting improved a lot. 

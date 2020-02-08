@@ -1,7 +1,7 @@
 ---
 title: OSPF DN-BIT
 date: 2011-12-25 14:10:00 +0800
-categories: [RS]
+categories: [Cisco,RS]
 tags: [Cisco,IOS,IOS-XR]
 ---
 

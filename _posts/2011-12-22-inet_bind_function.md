@@ -1,8 +1,8 @@
 ---
 title: inet_bind ( ) function
 date: 2011-12-21 14:10:00 +0800
-categories: [Linux]
-tags: [Linux,C Programming]
+categories: [Programming,Linux]
+tags: [C]
 ---
 
 the call flow of bind( ) function can boil down to a terse flow like this:  sys_socketcall ( ) —> sys_bind ( ) —> inet_bind ( );  I took a snippet of inet_bind ( ) function below:

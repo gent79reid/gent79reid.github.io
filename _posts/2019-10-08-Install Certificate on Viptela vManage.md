@@ -1,8 +1,8 @@
 ---
 title: Install Certificate on Viptela vManage
 date: 2019-10-08 14:10:00 +0800
-categories: [SD-WAN]
-tags: [Cisco,Viptela,CA,Installation]
+categories: [Cisco,SD-WAN]
+tags: [Installation]
 ---
 
 Viptela vManage 18.4 and later offers the option to use Enterprise CA root certificate to build the certificate chain. This is a piece of good news for people who wants to build their own lab without requesting the official signed certificates from Symantec. 

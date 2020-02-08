@@ -1,8 +1,8 @@
 ---
 title: Onboarding Cisco cEdge Router
 date: 2019-10-21 14:10:00 +0800
-categories: [SD-WAN]
-tags: [Cisco, Viptela, Installation]
+categories: [Cisco,SD-WAN]
+tags: [Installation]
 ---
 
 **Side Note** This lab is to demonstrate the steps of bringing up Cisco CSR1kV without PnP service in lab environment. In real world, it is strongly recommended to leverage Cisco PnP service using auto bootstrap, either by copy bootstrap file to Physical cEdge compatible routers or use cloud-init for Virtual instance. 
