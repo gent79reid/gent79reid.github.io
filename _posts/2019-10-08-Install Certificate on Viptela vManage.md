@@ -1,5 +1,5 @@
 ---
-title: "Install Certificate on Viptela vManage"
+title: Install Certificate on Viptela vManage
 date: 2019-10-08 14:10:00 +0800
 categories: [SD-WAN]
 tags: [Cisco,Viptela,CA,Installation]

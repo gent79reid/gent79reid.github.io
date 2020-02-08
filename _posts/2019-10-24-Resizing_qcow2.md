@@ -1,5 +1,5 @@
 ---
-title: "Resizing CSR1kV Qcow2 Image"
+title: Resizing CSR1kV Qcow2 Image
 date: 2019-10-24 00:34:00 +0800
 categories: [SD-WAN]
 tags: [Cisco,Qemu,Installation]

@@ -1,5 +1,5 @@
 ---
-title: "Onboarding Cisco cEdge Router"
+title: Onboarding Cisco cEdge Router
 date: 2019-10-21 14:10:00 +0800
 categories: [SD-WAN]
 tags: [Cisco, Viptela, Installation]

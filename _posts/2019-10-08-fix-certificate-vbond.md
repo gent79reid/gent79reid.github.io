@@ -1,5 +1,5 @@
 ---
-title: "Fix Root-ca-chain issue on Viptela vBond"
+title: Fix Root-ca-chain issue on Viptela vBond
 date: 2019-10-08 14:10:00 +0800
 categories: [SD-WAN]
 tags: [Cisco,Viptela,CA]

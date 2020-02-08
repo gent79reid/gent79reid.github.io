@@ -1,5 +1,5 @@
 ---
-title: "inet_bind ( ) function"
+title: inet_bind ( ) function
 date: 2011-12-21 14:10:00 +0800
 categories: [Linux]
 tags: [Linux,C Programming]
