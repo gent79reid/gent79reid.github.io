@@ -10,7 +10,7 @@ comments: true
 
 The post will walk you through the steps for upgrading vManage.
 
-# 1. Download vManage upgrade image from Cisco
+# Download vManage upgrade image from Cisco
 
 ![44A898C9-580E-4F6B-8193-8B4F3E716DB1](/assets/images/2019-10-21-Upgrade_vManage/44A898C9-580E-4F6B-8193-8B4F3E716DB1.png)
 
@@ -22,7 +22,7 @@ bootx64.efi       crash.kernel      md5sum            rootfsimg.sig     sigs.vip
 cisco_crl.pem     image-signing.crt rootfs.img        sigs              vmlinuz
 ```
 
-# 2. Navigate to Maintenance -> Software Repository
+# Navigate to Maintenance -> Software Repository
 
 Add the downloaded vmanage upgrade image here. 
 
@@ -32,7 +32,7 @@ After done, you should be able to see the result like below.
 
 ![FE9EA772-E83C-402E-9E4D-FA1BCA186260](/assets/images/2019-10-21-Upgrade_vManage/FE9EA772-E83C-402E-9E4D-FA1BCA186260.png)
 
-# 3. Go to Maintenance -> Software upgrade -> vManage
+# Go to Maintenance -> Software upgrade -> vManage
 
 Click **Upgrade** button. 
 
