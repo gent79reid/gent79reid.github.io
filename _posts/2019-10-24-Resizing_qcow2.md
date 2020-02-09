@@ -1,8 +1,10 @@
 ---
-title: Resizing CSR1kV Qcow2 Image
-date: 2019-10-24 00:34:00 +0800
-categories: [Cisco,SD-WAN]
-tags: [Installation]
+layout: post
+title: "Resizing CSR1kV Qcow2 Image"
+description: "This post will show you the simple steps of resizing CSR1kV image"
+categories: [SD-WAN]
+tags: [Cisco,Qemu,Installation]
+comments: true
 ---
 
 

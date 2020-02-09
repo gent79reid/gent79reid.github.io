@@ -1,8 +1,13 @@
 ---
-title: Running Cisco Trex
-date: 2019-10-18 14:10:00 +0800
-categories: [Tools,Trafffic Generator]
-tags: [Tools]
+
+layout: post
+title: "Running Cisco Trex"
+description: "This post will cover some basic usages of Cisco Trex, show you how to simply launch Trex to validate your DUT in home lab."
+categories: [Tools]
+tags: [Cisco,Trafffic Generator,Installation]
+comments: true
+redirect_from:
+  - /2019/10/18/
 ---
 
 **Side Note** This post does not aim to articulate the power of Cisco Trex, and not cover its advance features. I will keep updating this post series as I am going deeper in my project, which will heavily rely on Trex to do all kinds of interesting design. Trex doesn't have very fancy GUI client like Spirent, but its GUI client is getting improved a lot. 
@@ -36,7 +41,7 @@ Trex has stateful and advanced stateful mode, you can think of stateful testing 
 
 Profile is a list of streams, which composes of **Three** blocks : Scapy notation packet, Field Engine and TX mode. The profile can be invoked directly from Trex interactive mode with **start** command. 
 
-![image-20191019221526328](/assets/img/2019-10-18-Run_Cisco_Trex/image-20191019221526328.png)
+![image-20191019221526328](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019221526328.png)
 
 The below is a profile sample:
 
@@ -101,7 +106,7 @@ trex>start -f stl/udp_1pkt_simple.py -m 10mbps -a
 
 Here is the lab which I am building to verify Cisco Viptela SD-WAN solution, the lab is running on the top of EVE-NG, I have to admit that eve-ng is very user-friendly, easy learning-curve and excellent UI to draw your arbitrary topology. After paid for the professional license, you can enjoy docker and more fancy topology drawing, most importantly PRO version has integrated the link quality simulation, saving your time to use [linux-netem](https://wiki.linuxfoundation.org/networking/netem) or [wanem](http://wanem.sourceforge.net/). 
 
-![image-20191019155002861](/assets/img/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png)
+![image-20191019155002861](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155002861.png)
 
 Please avoid the part of SD-WAN components, we will only focus on Cisco Trex on the right-hand side, I will write other posts to walk through the steps of setting up Cisco Viptela SD-WAN on all virtualized environment. 
 
@@ -133,11 +138,11 @@ I will use [Trex GUI client](https://github.com/cisco-system-traffic-generator/t
 
 ***2. Open Trex GUI client and connect to the server:***
 
-   ![image-20191019155022256](/assets/img/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png)
+   ![image-20191019155022256](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019155022256.png)
 
 ***3. Acquire Port 0 which is mapping to eth2, port 1 to eth3.***
 
-   ![image-20191019154829306](/assets/img/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png)
+   ![image-20191019154829306](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019154829306.png)
 
 ***4. Convert Python code to YAML file **(Profile)**, and add the profile associating with Port 0.***
 
@@ -168,7 +173,7 @@ I will use [Trex GUI client](https://github.com/cisco-system-traffic-generator/t
 
 ***5. Traffic Profiles -> load Profile load up the profile***
 
-![image-20191019175826840](/assets/img/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png)
+![image-20191019175826840](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019175826840.png)
 
 Change Rate parameter to "pps/1.0k", so we can circulate the time of network convergency. (one packet loss = the 1ms loss).
 
@@ -176,15 +181,15 @@ Change Rate parameter to "pps/1.0k", so we can circulate the time of network con
 
 ***6. Use Packet Editor to manipulate packet content, remove default TCP layer and add UDP layer, also update src/dst IP address.***
 
-![image-20191019164800639](/assets/img/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png)
+![image-20191019164800639](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019164800639.png)
 
 ***7. Now, it's time to fire up Trex***
 
-   ![image-20191019180212740](/assets/img/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png)
+   ![image-20191019180212740](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180212740.png)
 
 Navigate to "Latency" tab, check the counters of "dropped".
 
-![image-20191019180405409](/assets/img/2019-10-18-Run_Cisco_Trex/image-20191019180405409.png)
+![image-20191019180405409](/assets/images/2019-10-18-Run_Cisco_Trex/image-20191019180405409.png)
 
 
 

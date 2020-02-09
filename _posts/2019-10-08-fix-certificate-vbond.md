@@ -1,13 +1,17 @@
 ---
-title: Fix Root-ca-chain issue on Viptela vBond
-date: 2019-10-08 14:10:00 +0800
-categories: [Cisco,SD-WAN]
-tags: [Troubleshooting]
+layout: post
+title: "Fix Root-ca-chain issue on Viptela vBond"
+description: ""
+categories: [SD-WAN]
+tags: [Cisco,Viptela,CA]
+comments: true
+redirect_from:
+    - /2019/10/08/
 ---
 
 Failed to install certificate for vBond and vSmart!
 
-![BA326A29-A9CB-4222-B4F6-020F6325EB87](/assets/img/BA326A29-A9CB-4222-B4F6-020F6325EB87.png)
+![BA326A29-A9CB-4222-B4F6-020F6325EB87](/assets/images/BA326A29-A9CB-4222-B4F6-020F6325EB87.png)
 
 I think I should install CA root certificate on vBond and vSmart first, if don’t, how the two trust the signed certificate from the CA ?
 After added vBond on vManage, the CA root certificate has been pushed down it, there is no need to make manual provision. 
@@ -62,7 +66,7 @@ Certificate:
 ```
 
 Then, from vManage install the signed certificate of vBond CSR. 
-![image-20191008230321074](/assets/img/image-20191008230321074.png)
+![image-20191008230321074](/assets/images/image-20191008230321074.png)
 
 ```bash
 vBond-DC# show certificate installed 
