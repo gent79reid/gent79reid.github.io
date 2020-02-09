@@ -7,7 +7,6 @@ tags: [Cisco,Qemu,Installation]
 comments: true
 ---
 
-
 The size of CSR1000v qcow2 image downloaded from Cisco is only 8G, which is below the minimum requirement of SD-AVC Controller installation. And I don't want to reinstall CSR1kV from ISO, let's try to resize the image. 
 
 **Step 1: Identify the filesytem used on CSR1kV image**

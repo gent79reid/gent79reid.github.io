@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Install Certificate on Viptela vManage"
-description: ""
+description: "Viptela vManage 18.4 and later offers the option to use Enterprise CA root certificate to build the certificate chain. This is a piece of good news for people who wants to build their own lab without requesting the official signed certificates from Symantec. "
 categories: [SD-WAN]
 tags: [Cisco,Viptela,CA,Installation]
 comments: true
@@ -9,11 +9,9 @@ redirect_from:
   - /2019/10/08/
 ---
 
-Viptela vManage 18.4 and later offers the option to use Enterprise CA root certificate to build the certificate chain. This is a piece of good news for people who wants to build their own lab without requesting the official signed certificates from Symantec. 
-
 Here is the high-level procedure to generate and install a signed certificate on vManage. 
 
-**1. Install CA root on your PC**
+#1. Install CA root on your PC
 
    For MAC user, XCA is one of the user-friendly tool to manage certificates. <https://hohnstaedt.de/xca/>
 
@@ -29,7 +27,7 @@ This is how it looks like after you populate other fields in the certificate for
    ![](/assets/images/2019-10-08/image-20191008154222354.png)
 
 
-**2. Install the CA root certificate on vManage**
+#2. Install the CA root certificate on vManage
 
    vManage needs to trust the root certificate before it can accepte the signed certificate from it, this is natural trustship. 
 
@@ -44,7 +42,7 @@ Next, setup CSR relevant values on the same page,
    ![](/assets/images/2019-10-08/image-20191008155113461.png)
 
 
-**3. Generate, Sign CSR and install the signed certificate**
+#3. Generate, Sign CSR and install the signed certificate
 
 then save and go to vManage "Configuration" -> "Certificates" -> "Controller" tab. Select vManage node and click the ... option to display the drop-down menu, generate CSR. 
 
