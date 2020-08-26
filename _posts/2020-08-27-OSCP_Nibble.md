@@ -1,10 +1,14 @@
+---
+layout: post
+title: "OSCP: Nibble"
+description: "The key point of successfully breaching this case is the luck, the luck you have when you are guessing the blog admin login credential. Nothing else!d"
+categories: [OSCP]
+tags: [Linux,Redteam]
+comments: true
+---
+
 # Nibbles
-
 Created: Feb 29, 2020 5:08 PM
-
-# Summary
-
-The key point of successfully breaching this case is the luck, the luck you have when you are guessing the blog admin login credential. Nothing else!
 
 START TIME: 29th February 2020 
 
