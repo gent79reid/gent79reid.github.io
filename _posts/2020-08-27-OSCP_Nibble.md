@@ -3,7 +3,7 @@ layout: post
 title: "OSCP: Nibble"
 description: "The key point of successfully breaching this case is the luck, the luck you have when you are guessing the blog admin login credential. Nothing else!d"
 categories: [OSCP]
-tags: [Linux,Redteam]
+tags: [Linux,Hacking]
 comments: true
 ---
 
