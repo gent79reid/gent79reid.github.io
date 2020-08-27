@@ -25,7 +25,7 @@ PWNED TIME: 12th April 2020
 
 Use Burpsuite, locate the login portal and its url, then use burpsuite repeater to repeat the login access.
 
-![image-1](/_posts/Nibbles5f92a871a4f941df83cdeb203e947b41/image-1.png)
+![image-1](/assets/imagess/Nibbles5f92a871a4f941df83cdeb203e947b41/image-1.png)
 
 ```bash
 hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.10.75 http-post-form "/nibbleblog/admin.php:username=^USER^&password=^PASS^:Incorrect username"
@@ -215,7 +215,7 @@ prepare the php file camouflaged as image file, and prepare the listen nc at att
 
 How to send HTTP GET with cookie in Burpsuite ? 
 
-![image-2](/_posts/Nibbles5f92a871a4f941df83cdeb203e947b41/image-2.png)
+![image-2](/assets/imagess/Nibbles5f92a871a4f941df83cdeb203e947b41/image-2.png)
 
 Got the reverse shell with below code
 
@@ -240,7 +240,7 @@ python3 -c 'import pty;pty.spawn("/bin/bash")'
 
 What is the purpose of executing following commands? 
 
-![image-3.png](/_posts/Nibbles5f92a871a4f941df83cdeb203e947b41/image-3.png)
+![image-3.png](/assets/imagess/Nibbles5f92a871a4f941df83cdeb203e947b41/image-3.png)
 
 The article talks about the knowledge of using stty to upgrade pty spawned from python script. 
 
