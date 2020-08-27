@@ -25,7 +25,7 @@ PWNED TIME: 12th April 2020
 
 Use Burpsuite, locate the login portal and its url, then use burpsuite repeater to repeat the login access.
 
-![Untitled.png](/assets/images/Nibbles5f92a871a4f941df83cdeb203e947b41/Untitled.png)
+![Untitled](/assets/images/Nibbles5f92a871a4f941df83cdeb203e947b41/Untitled.png)
 
 ```bash
 hydra -l admin -P /usr/share/wordlists/rockyou.txt 10.10.10.75 http-post-form "/nibbleblog/admin.php:username=^USER^&password=^PASS^:Incorrect username"
