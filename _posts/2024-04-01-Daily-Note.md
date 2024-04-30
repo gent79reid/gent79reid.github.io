@@ -57,14 +57,14 @@ NC64as_T4_v3
 
 
 
-![|400](../../Attachments/Pasted%20image%2020240403155946.png)
+![|400](../Attachments/Pasted%20image%2020240403155946.png)
 
 
-![[../../Attachments/Pasted image 20240403173719.png|500]]
+![[../Attachments/Pasted image 20240403173719.png|500]]
 
 
 
-![[../../Attachments/Pasted image 20240403211736.png|400]]
+![[../Attachments/Pasted image 20240403211736.png|400]]
 
 ```
 text-generation-launcher --huggingface-hub-cache /home/azureuser/LLM/llm_models/Jamba-v0.1 --model-id ai21labs/Jamba-v0.1
