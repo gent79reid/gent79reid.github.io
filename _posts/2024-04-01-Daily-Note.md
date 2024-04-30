@@ -1,6 +1,6 @@
 ---
 title: 2024-04-01-Daily-Note
-author: gent79
+author: <rc> 
 date: 2024-04-01
 categories: [Daily]
 tags: [AI,LLM]
