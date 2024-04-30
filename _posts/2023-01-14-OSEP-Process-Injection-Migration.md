@@ -1,6 +1,6 @@
 ---
 title: Process Injection & Migration
-author: rc
+author: <rc>
 date: 2023-01-14
 categories: [OSEP]
 mermaid: true
