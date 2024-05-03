@@ -22,12 +22,12 @@ wsl --set-default <NewDistributionName>
 
 ## Prepare Splunk Attack Range Installation Environment
 
-Install Virtualbox lastest version on Windows Host, there is no need to install Vagarant on Windows Host. 
+Install Virtualbox lastest version on Windows Host, there is no need to install Vagrant on Windows Host. 
 
 https://attack-range.readthedocs.io/en/latest/Attack_Range_Local.html#linux
 While using Poetry to build the dependency, it would be difficult for some people who has slow Internet access, so you might need to open up the pyproject.toml file and manually install them one by one. 
 
-Next, as the ansible playbooks at current release are still using "include" decretive that is already deprecated, so use below command to replace it.
+Next, as the ansible playbooks at current release are still using "include" keyword that is already deprecated, so use below command to replace it.
 ```bash
 find . -name "main.yml" -exec sed -i 's/include:/include_tasks:/g' {} +
 ```
